@@ -4,14 +4,18 @@ using System.Collections;
 public class AudioManager {
 
   private static AudioManager Instance = null;
-  float[] FrequencyBand = new float[8];
+  float[] MuteFrequencyBand = new float[8];
+  float[] MuteMaximumValue = new float[8];
+  float[] MuteResult = new float[8];
+
+  float[] NoMuteFrequencyBand = new float[8];
+  float[] NoMuteMaximumValue = new float[8];
+  float[] NoMuteResult = new float[8];
+
   float[] FrequencyBandBackGround = new float[8];
-
-  float[] MaximumValue = new float[8];
-  float[] Result = new float[8];
-
   float[] MaximumValueBackGround = new float[8];
   float[] ResultBackGround = new float[8];
+
 
   public static AudioManager GetInstance()
   {
@@ -28,60 +32,112 @@ public class AudioManager {
     for(int i = 0; i < 8; i++)
     {
       FrequencyBandBackGround[i] = 0;
-      MaximumValue[i] = 1;
-      Result[i] = 0;
+      MuteMaximumValue[i] = 1;
+      MuteResult[i] = 0;
     }
   }
 
-  public void SetFrequencyBand(int band, float frequency)
+  public void SetMuteFrequencyBand(int band, float frequency)
   {
-    FrequencyBand[band] = frequency;
+    MuteFrequencyBand[band] = frequency;
   }
 
-  public float GetFrequencyBand(int band)
+  public float GetMuteFrequencyBand(int band)
   {
-    return FrequencyBand[band];
+    return MuteFrequencyBand[band];
   }
 
-  public void SetMaximumValue(int band, float value)
+  public void SetMuteMaximumValue(int band, float value)
   {
-    MaximumValue[band] = value;
+    MuteMaximumValue[band] = value;
   }
 
-  public float GetMaximumValue(int band)
+  public float GetMuteMaximumValue(int band)
   {
-    return MaximumValue[band];
+    return MuteMaximumValue[band];
   }
 
-  public void SetResult(int band, float result)
+  public void SetMuteResult(int band, float result)
   {
-    Result[band] = result;
+    MuteResult[band] = result;
   }
 
-  public float GetResult(int band)
+  public float GetMuteResult(int band)
   {
-    return Result[band];
+    return MuteResult[band];
   }
 
-  public void LinearMapping(int band)
+  public void MuteLinearMapping(int band)
   {
-    float value = FrequencyBand[band];
+    float value = MuteFrequencyBand[band];
 
     if (value < 0)
     {
       value = 0;
     }
 
-    if (value > MaximumValue[band])
+    if (value > MuteMaximumValue[band])
     {
-      MaximumValue[band] = FrequencyBand[band];
+      MuteMaximumValue[band] = MuteFrequencyBand[band];
     }
 
-    Result[band] = (value - 0) / (MaximumValue[band] - 0);
+    MuteResult[band] = (value - 0) / (MuteMaximumValue[band] - 0);
 
-    if (float.IsNaN(Result[band]))
+    if (float.IsNaN(MuteResult[band]))
     {
-      Result[band] = 0;
+      MuteResult[band] = 0;
+    }
+  }
+
+  public void SetNoMuteFrequencyBand(int band, float frequency)
+  {
+    NoMuteFrequencyBand[band] = frequency;
+  }
+
+  public float GetNoMuteFrequencyBand(int band)
+  {
+    return NoMuteFrequencyBand[band];
+  }
+
+  public void SetNoMuteMaximumValue(int band, float value)
+  {
+    NoMuteMaximumValue[band] = value;
+  }
+
+  public float GetNoMuteMaximumValue(int band)
+  {
+    return NoMuteMaximumValue[band];
+  }
+
+  public void SetNoMuteResult(int band, float result)
+  {
+    NoMuteResult[band] = result;
+  }
+
+  public float GetNoMuteResult(int band)
+  {
+    return NoMuteResult[band];
+  }
+
+  public void NoMuteLinearMapping(int band)
+  {
+    float value = NoMuteFrequencyBand[band];
+
+    if (value < 0)
+    {
+      value = 0;
+    }
+
+    if (value > NoMuteMaximumValue[band])
+    {
+      NoMuteMaximumValue[band] = NoMuteFrequencyBand[band];
+    }
+
+    NoMuteResult[band] = (value - 0) / (NoMuteMaximumValue[band] - 0);
+
+    if (float.IsNaN(NoMuteResult[band]))
+    {
+      NoMuteResult[band] = 0;
     }
   }
 

@@ -4,9 +4,11 @@ using System.Collections;
 public class AudioComposition : MonoBehaviour {
 
   AudioSource AudioSource;
-   float[] Samples = new float[512];
-   float[] VelocityFrequencyBand = new float[8];
-   float NumberOfBands;
+  float[] Samples = new float[512];
+  float[] VelocityFrequencyBand = new float[8];
+  float NumberOfBands;
+
+  public bool IsMuteMusic;
 
   // Use this for initialization
   void Start ()
@@ -20,7 +22,11 @@ public class AudioComposition : MonoBehaviour {
   {
     GetSpectrumData();
     IntegrateFrequency();
-    IntegrateVelocity();
+
+    if (!IsMuteMusic)
+    {
+      IntegrateVelocity();
+    }
   }
 
   void GetSpectrumData()
@@ -51,7 +57,14 @@ public class AudioComposition : MonoBehaviour {
         count++;
       }
 
-      AudioManager.GetInstance().SetFrequencyBand(i, (amplitude / count) * 10);
+      if (IsMuteMusic)
+      {
+        AudioManager.GetInstance().SetMuteFrequencyBand(i, (amplitude / count) * 10);
+      }
+      else
+      {
+        AudioManager.GetInstance().SetNoMuteFrequencyBand(i, (amplitude / count) * 10);
+      }
     }
   }
 
@@ -59,13 +72,13 @@ public class AudioComposition : MonoBehaviour {
   {
     for (int i = 0; i < NumberOfBands; i++)
     {
-      if (AudioManager.GetInstance().GetFrequencyBand(i) > AudioManager.GetInstance().GetFrequencyBandBackGround(i))
+      if (AudioManager.GetInstance().GetNoMuteFrequencyBand(i) > AudioManager.GetInstance().GetFrequencyBandBackGround(i))
       {
-        AudioManager.GetInstance().SetFrequencyBandBackGround(i, AudioManager.GetInstance().GetFrequencyBand(i));
+        AudioManager.GetInstance().SetFrequencyBandBackGround(i, AudioManager.GetInstance().GetNoMuteFrequencyBand(i));
         VelocityFrequencyBand[i] = 0.001f;
       }
 
-      if (AudioManager.GetInstance().GetFrequencyBand(i) < AudioManager.GetInstance().GetFrequencyBandBackGround(i))
+      if (AudioManager.GetInstance().GetNoMuteFrequencyBand(i) < AudioManager.GetInstance().GetFrequencyBandBackGround(i))
       {
         float CopyFrequencyBand = AudioManager.GetInstance().GetFrequencyBandBackGround(i);
         CopyFrequencyBand -= VelocityFrequencyBand[i];

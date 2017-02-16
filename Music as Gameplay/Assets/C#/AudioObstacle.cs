@@ -9,20 +9,24 @@ public class AudioObstacle : MonoBehaviour {
   float MaxVelocity;
   float Velocity;
   Vector3 InitialPosition;
+  public static bool CanSapwn;
   // Use this for initialization
   void Start () {
     MoveLeft = true;
     MoveRight = false;
     MaxVelocity = 0.06f;
     Velocity = 0.0f;
-    AudioManager.GetInstance().SetMaximumValue(band, 1);
+    AudioManager.GetInstance().SetNoMuteMaximumValue(band, 1);
     InitialPosition = transform.localPosition;
+    CanSapwn = false;
   }
 	
 	// Update is called once per frame
 	void Update () {
-    AudioManager.GetInstance().LinearMapping(band);
     //transform.position += Vector3.back * Time.deltaTime;
+
+    AudioManager.GetInstance().NoMuteLinearMapping(band);
+   
     CheckFrequency();
 
     if (!CheckOffset())
@@ -33,16 +37,20 @@ public class AudioObstacle : MonoBehaviour {
 
   void CheckFrequency()
   {
-    Vector3 pos = transform.localPosition;
-    float actualValue = AudioManager.GetInstance().GetResult(band);
+    float actualValue = AudioManager.GetInstance().GetNoMuteResult(band);
 
     if (actualValue < 0)
     {
       actualValue = 0;
     }
 
-    if (actualValue >= 0.7f && actualValue <= 1.0f)
+    if (actualValue >= 0.8f && actualValue <= 1.0f)
     {
+      if(band == 1)
+      {
+        CanSapwn = true;
+      }
+      
       Velocity = MaxVelocity;
     }
 

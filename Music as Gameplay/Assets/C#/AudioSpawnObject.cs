@@ -12,7 +12,7 @@ public class AudioSpawnObject : MonoBehaviour {
 
   // Use this for initialization
   void Start () {
-    AudioManager.GetInstance().SetMaximumValue(Band, 1);
+
     timeLeft = 1.0f;
     hola = 0;
     asco = false;
@@ -20,11 +20,10 @@ public class AudioSpawnObject : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-   
 
-    /*if (AudioManager.GetInstance().GetResult(Band) > 0.80f && !asco)
+    /*if (AudioManager.GetInstance().GetNoMuteResult(Band) > 0.60f && AudioManager.GetInstance().GetNoMuteResult(Band) < 0.70f)
     {
-      Debug.Log(hola);
+
       hola++;
       asco = true;
       Spawn();
@@ -32,7 +31,7 @@ public class AudioSpawnObject : MonoBehaviour {
 
     if (asco)
     {
-      if(timeLeft >= 0.3f)
+      if(timeLeft >= 0.5f)
       {
         asco = false;
         timeLeft = 0;
@@ -41,19 +40,31 @@ public class AudioSpawnObject : MonoBehaviour {
         timeLeft += Time.deltaTime;
       }
     }*/
+
+    CheckFrequency();
+  }
+
+  void CheckFrequency()
+  {
+    if (AudioObstacle.CanSapwn)
+    {
+      AudioObstacle.CanSapwn = false;
+      Spawn();
+      Debug.Log("Hola");
+    }
   }
 
   void Spawn()
   {
-    int random = (int)Random.Range(0.0f, 16.0f);
+    /*int random = (int)Random.Range(0.0f, 16.0f);
 
     if (random % 2 != 0)
     {
       random -= 1;
     }
     Vector3 position = SpawnPoint.position;
-    position[0] += random;
-
+    position[0] += random;*/
+    Vector3 position = SpawnPoint.position;
     Instantiate(ObjectToSpawn, position, Quaternion.identity);
   }
 }
