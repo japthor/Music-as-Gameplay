@@ -16,7 +16,6 @@ public class AudioObstacle : MonoBehaviour {
     MoveRight = false;
     MaxVelocity = 0.06f;
     Velocity = 0.0f;
-    AudioManager.GetInstance().SetNoMuteMaximumValue(band, 1);
     InitialPosition = transform.localPosition;
     CanSapwn = false;
   }

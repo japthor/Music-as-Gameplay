@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AudioManager {
+public class AudioManager : MonoBehaviour{
 
-  private static AudioManager Instance = null;
+  private static AudioManager Instance;
   float[] MuteFrequencyBand = new float[8];
   float[] MuteMaximumValue = new float[8];
   float[] MuteResult = new float[8];
@@ -21,9 +21,8 @@ public class AudioManager {
   {
     if (Instance == null)
     {
-      Instance = new AudioManager();
+      Instance = GameObject.FindObjectOfType<AudioManager>();
     }
-
     return Instance;
   }
 
@@ -31,9 +30,17 @@ public class AudioManager {
   {
     for(int i = 0; i < 8; i++)
     {
-      FrequencyBandBackGround[i] = 0;
+      MuteFrequencyBand[i] = 0;
       MuteMaximumValue[i] = 1;
       MuteResult[i] = 0;
+
+      NoMuteFrequencyBand[i] = 0;
+      NoMuteMaximumValue[i] = 1;
+      NoMuteResult[i] = 0;
+
+      FrequencyBandBackGround[i] = 0;
+      MaximumValueBackGround[i] = 1;
+      ResultBackGround[i] = 0;
     }
   }
 
