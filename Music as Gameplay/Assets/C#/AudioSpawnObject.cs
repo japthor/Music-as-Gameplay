@@ -2,69 +2,56 @@
 using System.Collections;
 
 public class AudioSpawnObject : MonoBehaviour {
-  static int hola;
   public int Band;
   public GameObject ObjectToSpawn;
-  public Transform SpawnPoint;
-  float timeLeft;
-  bool asco;
+  public Transform PositionToSpawn;
+  public float SecondsToSpawn;
+  public float MultiplyScale;
+  float Seconds;
+  float MaxFrequency;
 
 
   // Use this for initialization
   void Start () {
-
-    timeLeft = 1.0f;
-    hola = 0;
-    asco = false;
+    Seconds = SecondsToSpawn;
+    MaxFrequency = 0.0f;
   }
 	
 	// Update is called once per frame
 	void Update () {
-
-    /*if (AudioManager.GetInstance().GetNoMuteResult(Band) > 0.60f && AudioManager.GetInstance().GetNoMuteResult(Band) < 0.70f)
-    {
-
-      hola++;
-      asco = true;
-      Spawn();
-    }
-
-    if (asco)
-    {
-      if(timeLeft >= 0.5f)
-      {
-        asco = false;
-        timeLeft = 0;
-      }else
-      {
-        timeLeft += Time.deltaTime;
-      }
-    }*/
-
-    CheckFrequency();
+    AudioManager.GetInstance().NoMuteLinearMapping(Band);
+    Timer();
   }
 
-  void CheckFrequency()
+  void Timer()
   {
-    if (AudioObstacle.CanSapwn)
+    if(Seconds <= 0.0f)
     {
-      AudioObstacle.CanSapwn = false;
       Spawn();
-      Debug.Log("Hola");
+      Seconds = SecondsToSpawn;
+    }
+    else
+    {
+      float frequency = AudioManager.GetInstance().GetNoMuteResult(Band);
+
+      if (frequency <= 0.0f)
+      {
+        frequency = 0.0f;
+      }
+     
+      if (frequency > MaxFrequency)
+      {
+        MaxFrequency = frequency;
+      }
+ 
+      Seconds -= Time.deltaTime;
     }
   }
 
   void Spawn()
   {
-    /*int random = (int)Random.Range(0.0f, 16.0f);
-
-    if (random % 2 != 0)
-    {
-      random -= 1;
-    }
-    Vector3 position = SpawnPoint.position;
-    position[0] += random;*/
-    Vector3 position = SpawnPoint.position;
-    Instantiate(ObjectToSpawn, position, Quaternion.identity);
+    GameObject instantiate = Instantiate(ObjectToSpawn, PositionToSpawn.position, Quaternion.identity) as GameObject;
+    instantiate.transform.localScale = new Vector3(instantiate.transform.localScale.x, MaxFrequency * MultiplyScale, instantiate.transform.localScale.z);
+    MaxFrequency = 0.0f;
   }
 }

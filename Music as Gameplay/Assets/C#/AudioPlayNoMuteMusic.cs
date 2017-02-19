@@ -19,7 +19,7 @@ public class AudioPlayNoMuteMusic : MonoBehaviour {
     {
       if (!Play)
       {
-        AudioSource.Play();
+        //AudioSource.Play();
         Play = true;
       }
     }

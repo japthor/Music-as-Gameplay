@@ -20,7 +20,7 @@ public class AudioBackGroundMovement : MonoBehaviour {
 	void Update ()
   {
     AudioManager.GetInstance().LinearMappingBackGround(Band);
-    if ( a== 0)
+    if (a == 0)
     {
       transform.localScale = new Vector3(transform.localScale.x, (AudioManager.GetInstance().GetResultBackGround(Band) * MultiplyScale) + InitialScale, transform.localScale.z);
       Color color = new Color(AudioManager.GetInstance().GetResultBackGround(Band), AudioManager.GetInstance().GetResultBackGround(Band), AudioManager.GetInstance().GetResultBackGround(Band));
