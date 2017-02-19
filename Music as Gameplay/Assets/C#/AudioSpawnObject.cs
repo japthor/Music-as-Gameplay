@@ -1,19 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class AudioSpawnObject : MonoBehaviour {
   public int Band;
   public GameObject ObjectToSpawn;
   public Transform PositionToSpawn;
-  public float SecondsToSpawn;
-  public float MultiplyScale;
+  float SecondsToSpawn;
+  float MultiplyScale;
   float Seconds;
   float MaxFrequency;
 
 
   // Use this for initialization
   void Start () {
+    SecondsToSpawn = 0.2f;
     Seconds = SecondsToSpawn;
+    MultiplyScale = 5.0f;
     MaxFrequency = 0.0f;
   }
 	
@@ -33,6 +36,7 @@ public class AudioSpawnObject : MonoBehaviour {
     else
     {
       float frequency = AudioManager.GetInstance().GetNoMuteResult(Band);
+      Mathf.Round(frequency);
 
       if (frequency <= 0.0f)
       {

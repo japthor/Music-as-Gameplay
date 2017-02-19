@@ -22,7 +22,7 @@ public class AudioObstacle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-    transform.position += Vector3.back * Time.deltaTime * 3;
+    transform.position += Vector3.back * Time.deltaTime * 6;
 
     /*AudioManager.GetInstance().NoMuteLinearMapping(band);
    
