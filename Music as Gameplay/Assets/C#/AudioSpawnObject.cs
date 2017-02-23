@@ -14,15 +14,15 @@ public class AudioSpawnObject : MonoBehaviour {
 
   // Use this for initialization
   void Start () {
-    SecondsToSpawn = 0.2f;
+    SecondsToSpawn = 0.3f;
     Seconds = SecondsToSpawn;
-    MultiplyScale = 5.0f;
+    MultiplyScale = 10.0f;
     MaxFrequency = 0.0f;
   }
 	
 	// Update is called once per frame
 	void Update () {
-    AudioManager.GetInstance().NoMuteLinearMapping(Band);
+    AudioManager.GetInstance().MuteLinearMapping(Band);
     Timer();
   }
 
@@ -35,7 +35,7 @@ public class AudioSpawnObject : MonoBehaviour {
     }
     else
     {
-      float frequency = AudioManager.GetInstance().GetNoMuteResult(Band);
+      float frequency = AudioManager.GetInstance().GetMuteResult(Band);
       Mathf.Round(frequency);
 
       if (frequency <= 0.0f)

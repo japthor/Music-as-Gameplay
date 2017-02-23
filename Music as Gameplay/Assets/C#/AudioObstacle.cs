@@ -3,120 +3,29 @@ using System.Collections;
 
 public class AudioObstacle : MonoBehaviour {
 
-  public int band;
-  bool MoveLeft;
-  bool MoveRight;
-  float MaxVelocity;
-  float Velocity;
-  Vector3 InitialPosition;
-  public static bool CanSapwn;
-  // Use this for initialization
-  void Start () {
-    MoveLeft = true;
-    MoveRight = false;
-    MaxVelocity = 0.06f;
-    Velocity = 0.0f;
-    InitialPosition = transform.localPosition;
-    CanSapwn = false;
+  void Start ()
+  {
+    
   }
 	
-	// Update is called once per frame
-	void Update () {
-    transform.position += Vector3.back * Time.deltaTime * 6;
-
-    /*AudioManager.GetInstance().NoMuteLinearMapping(band);
-   
-    CheckFrequency();
-
-    if (!CheckOffset())
-    {
-      Movement();
-    }*/
-  }
-
-  void CheckFrequency()
+	
+	void Update ()
   {
-    float actualValue = AudioManager.GetInstance().GetNoMuteResult(band);
-
-    if (actualValue < 0)
-    {
-      actualValue = 0;
-    }
-
-    if (actualValue >= 0.8f && actualValue <= 1.0f)
-    {
-      if(band == 1)
-      {
-        CanSapwn = true;
-      }
-      
-      Velocity = MaxVelocity;
-    }
-
+    Move();
+    Delete();
   }
 
-  void Movement()
+  void Move()
   {
-    Vector3 pos = transform.localPosition;
-
-    if (MoveLeft)
-    {
-      if(Velocity <= 0)
-      {
-        Velocity = 0;
-      }
-      else
-      {
-        Velocity += -(0.001f);
-        pos[0] += -(Velocity);
-        transform.localPosition = pos;
-      }
-     
-    }
-
-    if (MoveRight)
-    {
-      if (Velocity <= 0)
-      {
-        Velocity = 0;
-      }
-      else
-      {
-        Velocity += -(0.001f);
-        pos[0] += (Velocity);
-        transform.localPosition = pos;
-      }
-    }
-
+    transform.position += Vector3.back * Time.deltaTime * 3;
   }
 
-  bool CheckOffset()
+  void Delete()
   {
-    Vector3 pos = transform.localPosition;
-
-    if (MoveLeft)
+    if (transform.localPosition.z <= -20.0f)
     {
-      if (pos[0] <= InitialPosition.x - 2.0f)
-      {
-        pos[0] = InitialPosition.x - 2.0f;
-        transform.localPosition = pos;
-        MoveLeft = false;
-        MoveRight = true;
-        return true;
-      }
+      Destroy(this.gameObject);
     }
-
-    if (MoveRight)
-    {
-      if (pos[0] >= InitialPosition.x + 2.0f)
-      {
-        pos[0] = InitialPosition.x + 2.0f;
-        transform.localPosition = pos;
-        MoveRight = false;
-        MoveLeft = true;
-        return true;
-      }
-    }
-    return false;
   }
+
 }
