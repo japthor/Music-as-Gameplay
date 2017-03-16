@@ -4,17 +4,17 @@ using System.Collections;
 public class AudioManager : MonoBehaviour{
 
   private static AudioManager Instance;
-  float[] MuteFrequencyBand = new float[8];
-  float[] MuteMaximumValue = new float[8];
-  float[] MuteResult = new float[8];
+  float[] MuteFrequencyBand = new float[16];
+  float[] MuteMaximumValue = new float[16];
+  float[] MuteResult = new float[16];
 
-  float[] NoMuteFrequencyBand = new float[8];
-  float[] NoMuteMaximumValue = new float[8];
-  float[] NoMuteResult = new float[8];
+  float[] NoMuteFrequencyBand = new float[16];
+  float[] NoMuteMaximumValue = new float[16];
+  float[] NoMuteResult = new float[16];
 
-  float[] FrequencyBandBackGround = new float[8];
-  float[] MaximumValueBackGround = new float[8];
-  float[] ResultBackGround = new float[8];
+  float[] FrequencyBandBackGround = new float[16];
+  float[] MaximumValueBackGround = new float[16];
+  float[] ResultBackGround = new float[16];
 
 
   public static AudioManager GetInstance()
@@ -28,7 +28,7 @@ public class AudioManager : MonoBehaviour{
 
   void Start()
   {
-    for(int i = 0; i < 8; i++)
+    for(int i = 0; i < 16; i++)
     {
       MuteFrequencyBand[i] = 0;
       MuteMaximumValue[i] = 1;

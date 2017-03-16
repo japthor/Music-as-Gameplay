@@ -4,8 +4,8 @@ using System.Collections;
 public class AudioComposition : MonoBehaviour {
 
   AudioSource AudioSource;
-  float[] Samples = new float[512];
-  float[] VelocityFrequencyBand = new float[8];
+  float[] Samples = new float[1024];
+  float[] VelocityFrequencyBand = new float[16];
   float NumberOfBands;
 
   public bool IsMuteMusic;
@@ -14,7 +14,7 @@ public class AudioComposition : MonoBehaviour {
   void Start ()
   {
     AudioSource = GetComponent<AudioSource>();
-    NumberOfBands = 8;
+    NumberOfBands = 16;
   }
 	
 	// Update is called once per frame
@@ -36,37 +36,35 @@ public class AudioComposition : MonoBehaviour {
 
   void IntegrateFrequency()
   {
+    int[] sampleSize = new int[16] {1, 2, 4, 6, 8, 12, 18, 26, 38, 54, 70, 88, 110, 144, 190, 253 };
+
     int count = 0;
-
-    for (int i = 0; i < NumberOfBands; i++)
+    for (int i = 0; i < 16; i++)
     {
-      float amplitude = 0;
-      int sample = 0;
-    
-      sample = (i * 2) + 2;
+      float average = 0;
+      int sample = sampleSize[i];
 
-      if(sample == 7)
+      int j = 0;
+
+      for (j = 0; j < sample; j++)
       {
-        sample += 2;
-      }
-
-
-      for(int j = 0; j < sample; j++)
-      {
-        amplitude += Samples[count] * (count + 1);
+        average += Samples[count] * (count + 1);
         count++;
       }
-
+     
       if (IsMuteMusic)
       {
-        AudioManager.GetInstance().SetMuteFrequencyBand(i, (amplitude / count) * 10);
+        AudioManager.GetInstance().SetMuteFrequencyBand(i, (average / count) * 10);
       }
       else
       {
-        AudioManager.GetInstance().SetNoMuteFrequencyBand(i, (amplitude / count) * 10);
+        AudioManager.GetInstance().SetNoMuteFrequencyBand(i, (average / count) * 10);
       }
     }
+
   }
+
+
 
   void IntegrateVelocity()
   {
