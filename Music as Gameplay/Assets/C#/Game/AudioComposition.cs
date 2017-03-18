@@ -81,7 +81,7 @@ public class AudioComposition : MonoBehaviour {
         float CopyFrequencyBand = AudioManager.GetInstance().GetFrequencyBandBackGround(i);
         CopyFrequencyBand -= VelocityFrequencyBand[i];
         AudioManager.GetInstance().SetFrequencyBandBackGround(i, CopyFrequencyBand);
-        VelocityFrequencyBand[i] *= 1.2f;
+        VelocityFrequencyBand[i] *= 1.15f;
       }
     }
   }

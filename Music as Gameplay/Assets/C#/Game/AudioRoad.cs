@@ -16,42 +16,21 @@ public class AudioRoad : MonoBehaviour {
 	void Update ()
   {
     AudioManager.GetInstance().LinearMappingBackGround(Band);
-    Brightness();
+
+    Brightness(0.1f,0.8f,0.2f,0.8f);
     Material.SetColor("_EmissionColor", NewColor);
   }
 
-  void Brightness()
+  void Brightness(float min_frequency, float max_frequency, float min_bright, float max_bright)
   {
-    switch (Band)
+    if (AudioManager.GetInstance().GetResultBackGround(Band) <= min_frequency)
+      NewColor = new Color((Material.color.r * min_bright) / 1, (Material.color.g * min_bright) / 1, (Material.color.b * min_bright) / 1);
+    else
     {
-      case 0:
-        if (AudioManager.GetInstance().GetResultBackGround(Band) <= 0.1f)
-        {
-          NewColor = new Color(0.2f, 0.0f, 0.0f);
-        }
-        else
-        {
-          if (AudioManager.GetInstance().GetResultBackGround(Band) >= 0.8f)
-            NewColor = new Color(0.8f, 0.0f, 0.0f);
-          else
-          {
-            NewColor = new Color(AudioManager.GetInstance().GetResultBackGround(Band), 0.0f, 0.0f);
-          }
-            
-        }
-        break;
-
-      case 1:
-        if (AudioManager.GetInstance().GetResultBackGround(Band) <= 0.1f)
-          NewColor = new Color(0.2f, 0.1f, 0.0f);
-        else
-        {
-          if (AudioManager.GetInstance().GetResultBackGround(Band) >= 0.8f)
-            NewColor = new Color(0.8f, 0.4f, 0.0f);
-          else
-            NewColor = new Color(AudioManager.GetInstance().GetResultBackGround(Band), AudioManager.GetInstance().GetResultBackGround(Band) / 2, 0.0f);
-        }
-        break;
+      if (AudioManager.GetInstance().GetResultBackGround(Band) >= max_frequency)
+        NewColor = new Color((Material.color.r * max_bright) / 1, (Material.color.g * max_bright) / 1, (Material.color.b * max_bright) / 1);
+      else
+        NewColor = new Color((Material.color.r * AudioManager.GetInstance().GetResultBackGround(Band)) / 1, (Material.color.g * AudioManager.GetInstance().GetResultBackGround(Band)) / 1, (Material.color.b * AudioManager.GetInstance().GetResultBackGround(Band)) / 1);
     }
   }
 }
