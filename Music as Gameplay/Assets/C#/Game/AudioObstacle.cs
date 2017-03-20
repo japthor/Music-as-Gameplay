@@ -5,8 +5,9 @@ public class AudioObstacle : MonoBehaviour {
 
   private Material Material;
   private float Velocity;
-  private Vector3 LastPosition;
   private bool IsMovingDown;
+  public int Band;
+  private bool a;
 
   void Start ()
   {
@@ -19,6 +20,7 @@ public class AudioObstacle : MonoBehaviour {
 	void Update ()
   {
     Movement();
+    Scale();
   }
 
   void Brightness(float max_bright)
@@ -45,5 +47,12 @@ public class AudioObstacle : MonoBehaviour {
 
     if (other.gameObject.tag == "Destroy Trigger")
       Destroy(this.gameObject);
+  }
+
+  void Scale()
+  {
+    transform.localScale = new Vector3((AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.5f,
+                                       (AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.5f, 
+                                       (AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.5f);
   }
 }

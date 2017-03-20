@@ -6,9 +6,8 @@ public class AudioSpawnObstacle : MonoBehaviour {
   public int Band;
   public GameObject ObjectToSpawn;
   public Transform PositionToSpawn;
-  float SecondsToSpawn;
-  float Seconds;
-
+  private float SecondsToSpawn;
+  private float Seconds;
 
   // Use this for initialization
   void Start () {
@@ -38,8 +37,6 @@ public class AudioSpawnObstacle : MonoBehaviour {
 
   void Spawn()
   {
-    GameObject instantiate = Instantiate(ObjectToSpawn, PositionToSpawn.position, Quaternion.identity) as GameObject;
-    /*instantiate.transform.localScale = new Vector3(instantiate.transform.localScale.x, MaxFrequency * MultiplyScale, instantiate.transform.localScale.z);
-    MaxFrequency = 0.0f;*/
+    Instantiate(ObjectToSpawn, PositionToSpawn.position, Quaternion.identity);
   }
 }
