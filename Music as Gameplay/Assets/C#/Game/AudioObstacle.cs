@@ -7,7 +7,6 @@ public class AudioObstacle : MonoBehaviour {
   private float Velocity;
   private bool IsMovingDown;
   public int Band;
-  private bool a;
 
   void Start ()
   {
@@ -15,7 +14,6 @@ public class AudioObstacle : MonoBehaviour {
     Velocity = 6.5f;
     Brightness(0.9f);
   }
-	
 	
 	void Update ()
   {

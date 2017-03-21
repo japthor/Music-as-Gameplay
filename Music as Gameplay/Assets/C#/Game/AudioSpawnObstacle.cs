@@ -4,7 +4,8 @@ using System.Collections;
 
 public class AudioSpawnObstacle : MonoBehaviour {
   public int Band;
-  public GameObject ObjectToSpawn;
+  public GameObject Obstacle;
+  public GameObject Points;
   public Transform PositionToSpawn;
   private float SecondsToSpawn;
   private float Seconds;
@@ -37,6 +38,11 @@ public class AudioSpawnObstacle : MonoBehaviour {
 
   void Spawn()
   {
-    Instantiate(ObjectToSpawn, PositionToSpawn.position, Quaternion.identity);
+    float value = Random.Range(0.0f, 10.0f);
+
+    if(value >= 9)
+      Instantiate(Points, PositionToSpawn.position, Quaternion.identity);
+    else
+      Instantiate(Obstacle, PositionToSpawn.position, Quaternion.identity);
   }
 }
