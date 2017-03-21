@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class AudioPlayer : MonoBehaviour {
@@ -25,6 +26,7 @@ public class AudioPlayer : MonoBehaviour {
   {
     Movement();
     Move();
+    ScoreActivityRoad();
   }
 
   void Movement()
@@ -35,6 +37,7 @@ public class AudioPlayer : MonoBehaviour {
       {
         IsMoving = true;
         IsMovingLeft = true;
+        Position--;
         ActualPosition = transform.localPosition;
       }
     }
@@ -45,6 +48,7 @@ public class AudioPlayer : MonoBehaviour {
       {
         IsMoving = true;
         IsMovingLeft = false;
+        Position++;
         ActualPosition = transform.localPosition;
       }
     }
@@ -58,7 +62,6 @@ public class AudioPlayer : MonoBehaviour {
       {
         if(transform.localPosition.x <= ActualPosition.x - 2.0f)
         {
-          Position--;
           ChangeMaterial();
           IsMoving = false;
         }
@@ -69,7 +72,6 @@ public class AudioPlayer : MonoBehaviour {
       {
         if (transform.localPosition.x >= ActualPosition.x + 2.0f)
         {
-          Position++;
           ChangeMaterial();
           IsMoving = false;
         }
@@ -85,5 +87,39 @@ public class AudioPlayer : MonoBehaviour {
 
     Color newColor = new Color((Renderer.material.color.r * 0.2f) / 1, (Renderer.material.color.g * 0.2f) / 1, (Renderer.material.color.b * 0.2f) / 1);
     Renderer.material.SetColor("_EmissionColor", newColor * 2.0f);
+  }
+
+  void OnTriggerEnter(Collider other)
+  {
+    if (other.gameObject.tag == "Obstacle")
+    {
+      AudioManager.GetInstance().SetHasCollideWithObstacle(true);
+      AudioManager.GetInstance().SetScore(-300);
+      Destroy(other.gameObject);
+    }
+
+    if (other.gameObject.tag == "Points")
+    {
+      AudioManager.GetInstance().SetScore(500);
+      Destroy(other.gameObject);
+    }
+  }
+
+  void ScoreActivityRoad()
+  {
+    if (AudioManager.GetInstance().GetActivity(Position) >= 1 && AudioManager.GetInstance().GetActivity(Position) < 5)
+      AudioManager.GetInstance().SetScore(1);
+
+    else if (AudioManager.GetInstance().GetActivity(Position) >= 5 && AudioManager.GetInstance().GetActivity(Position) < 10)
+      AudioManager.GetInstance().SetScore(2);
+
+    else if (AudioManager.GetInstance().GetActivity(Position) >= 10 && AudioManager.GetInstance().GetActivity(Position) < 15)
+      AudioManager.GetInstance().SetScore(3);
+
+    else if (AudioManager.GetInstance().GetActivity(Position) >= 15 && AudioManager.GetInstance().GetActivity(Position) < 20)
+      AudioManager.GetInstance().SetScore(4);
+
+    else if (AudioManager.GetInstance().GetActivity(Position) >= 20 && AudioManager.GetInstance().GetActivity(Position) < 25)
+      AudioManager.GetInstance().SetScore(5);
   }
 }

@@ -12,7 +12,7 @@ public class AudioCamera : MonoBehaviour {
 	void Start ()
   {
     Duration = 0.0f;
-    Amount = 0.4f;
+    Amount = 0.5f;
     Decrease = 1.0f;
     Position = transform.localPosition;
   }
@@ -20,7 +20,17 @@ public class AudioCamera : MonoBehaviour {
   // Update is called once per frame
   void Update ()
   {
+    CheckCollision();
     Shake();
+  }
+
+  void CheckCollision()
+  {
+    if (AudioManager.GetInstance().GetHasCollideWithObstacle())
+    {
+      Duration = 0.5f;
+      AudioManager.GetInstance().SetHasCollideWithObstacle(false);
+    }
   }
 
   void Shake()
@@ -29,7 +39,6 @@ public class AudioCamera : MonoBehaviour {
     {
       transform.localPosition = Position + Random.insideUnitSphere * Amount;
       Duration -= Time.deltaTime * Decrease;
-
     }
     else
     {

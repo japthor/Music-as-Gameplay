@@ -44,7 +44,13 @@ public class AudioObstacle : MonoBehaviour {
       IsMovingDown = false;
 
     if (other.gameObject.tag == "Destroy Trigger")
+    {
+      AudioManager.GetInstance().SetActivity(Band, -1);
       Destroy(this.gameObject);
+    }
+
+    if (other.gameObject.tag == "Player")
+      AudioManager.GetInstance().SetActivity(Band, -1);
   }
 
   void Scale()

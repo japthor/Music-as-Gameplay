@@ -1,21 +1,27 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class AudioManager : MonoBehaviour{
 
   private static AudioManager Instance;
-  float[] MuteFrequencyBand = new float[16];
-  float[] MuteMaximumValue = new float[16];
-  float[] MuteResult = new float[16];
+  private float[] MuteFrequencyBand = new float[16];
+  private float[] MuteMaximumValue = new float[16];
+  private float[] MuteResult = new float[16];
 
-  float[] NoMuteFrequencyBand = new float[16];
-  float[] NoMuteMaximumValue = new float[16];
-  float[] NoMuteResult = new float[16];
+  private float[] NoMuteFrequencyBand = new float[16];
+  private float[] NoMuteMaximumValue = new float[16];
+  private float[] NoMuteResult = new float[16];
 
-  float[] FrequencyBandBackGround = new float[16];
-  float[] MaximumValueBackGround = new float[16];
-  float[] ResultBackGround = new float[16];
+  private float[] FrequencyBandBackGround = new float[16];
+  private float[] MaximumValueBackGround = new float[16];
+  private float[] ResultBackGround = new float[16];
 
+  private bool HasCollideWithObstacle;
+
+  public Text ScoreText;
+  private int Score;
+  private int[] Activity = new int[16];
 
   public static AudioManager GetInstance()
   {
@@ -30,18 +36,28 @@ public class AudioManager : MonoBehaviour{
   {
     for(int i = 0; i < 16; i++)
     {
-      MuteFrequencyBand[i] = 0;
-      MuteMaximumValue[i] = 1;
-      MuteResult[i] = 0;
+      MuteFrequencyBand[i] = 0.0f;
+      MuteMaximumValue[i] = 1.0f;
+      MuteResult[i] = 0.0f;
 
-      NoMuteFrequencyBand[i] = 0;
-      NoMuteMaximumValue[i] = 1;
-      NoMuteResult[i] = 0;
+      NoMuteFrequencyBand[i] = 0.0f;
+      NoMuteMaximumValue[i] = 1.0f;
+      NoMuteResult[i] = 0.0f;
 
-      FrequencyBandBackGround[i] = 0;
-      MaximumValueBackGround[i] = 1;
-      ResultBackGround[i] = 0;
+      FrequencyBandBackGround[i] = 0.0f;
+      MaximumValueBackGround[i] = 1.0f;
+      ResultBackGround[i] = 0.0f;
+
+      Activity[i] = 0;
     }
+
+    HasCollideWithObstacle = false;
+    Score = 0;
+  }
+
+  void Update()
+  {
+    SetScoreText();
   }
 
   public void SetMuteFrequencyBand(int band, float frequency)
@@ -199,5 +215,44 @@ public class AudioManager : MonoBehaviour{
       ResultBackGround[band] = 0;
     }
   }
+
+  public void SetHasCollideWithObstacle(bool result)
+  {
+    HasCollideWithObstacle = result;
+  }
+
+  public bool GetHasCollideWithObstacle()
+  {
+    return HasCollideWithObstacle;
+  }
+
+  private void SetScoreText()
+  {
+    ScoreText.text = Score.ToString();
+  }
+
+  public void SetScore(int result)
+  {
+    if (Score < 0)
+      Score = 0;
+    else
+      Score += result;
+  }
+
+  public int GetScore()
+  {
+    return Score;
+  }
+
+  public void SetActivity(int band, int result)
+  {
+    Activity[band] += result;
+  }
+
+  public int GetActivity(int band)
+  {
+    return Activity[band];
+  }
+
 
 }

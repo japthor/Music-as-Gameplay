@@ -41,8 +41,14 @@ public class AudioSpawnObstacle : MonoBehaviour {
     float value = Random.Range(0.0f, 10.0f);
 
     if(value >= 9)
+    {
       Instantiate(Points, PositionToSpawn.position, Quaternion.identity);
+      AudioManager.GetInstance().SetActivity(Band, 1);
+    }
     else
+    {
       Instantiate(Obstacle, PositionToSpawn.position, Quaternion.identity);
+      AudioManager.GetInstance().SetActivity(Band, 1);
+    }
   }
 }
