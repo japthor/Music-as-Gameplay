@@ -22,6 +22,7 @@ public class AudioManager : MonoBehaviour{
   public Text ScoreText;
   private int Score;
   private int[] Activity = new int[16];
+  private int[] Multiplier = new int[16];
 
   public static AudioManager GetInstance()
   {
@@ -49,6 +50,7 @@ public class AudioManager : MonoBehaviour{
       ResultBackGround[i] = 0.0f;
 
       Activity[i] = 0;
+      Multiplier[i] = 0;
     }
 
     HasCollideWithObstacle = false;
@@ -228,7 +230,8 @@ public class AudioManager : MonoBehaviour{
 
   private void SetScoreText()
   {
-    ScoreText.text = Score.ToString();
+    if(ScoreText != null)
+      ScoreText.text = Score.ToString();
   }
 
   public void SetScore(int result)
@@ -252,6 +255,16 @@ public class AudioManager : MonoBehaviour{
   public int GetActivity(int band)
   {
     return Activity[band];
+  }
+
+  public void SetMultiplier(int band, int result)
+  {
+    Multiplier[band] = result;
+  }
+
+  public int GetMultiplier(int band)
+  {
+    return Multiplier[band];
   }
 
 
