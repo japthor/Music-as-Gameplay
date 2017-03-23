@@ -12,7 +12,10 @@ public class AudioPlayer : MonoBehaviour {
   public Material[] Materials = new Material[16];
   private Renderer Renderer;
 
-	void Start ()
+  private TextMesh FeedBackPoints;
+  private bool IsFading;
+
+  void Start ()
   {
     Position = 7;
     IsMoving = false;
@@ -20,6 +23,10 @@ public class AudioPlayer : MonoBehaviour {
 
     Renderer = GetComponent<Renderer>();
     ChangeMaterial();
+
+    FeedBackPoints = GameObject.Find("FeedbackPointsText").GetComponent<TextMesh>();
+    FeedBackPoints.gameObject.SetActive(false);
+    IsFading = false;
   }
 
 	void Update ()
@@ -27,6 +34,7 @@ public class AudioPlayer : MonoBehaviour {
     Movement();
     Move();
     ScoreActivityRoad();
+    Fading();
   }
 
   void Movement()
@@ -85,7 +93,7 @@ public class AudioPlayer : MonoBehaviour {
   {
     Renderer.material = Materials[Position];
 
-    Color newColor = new Color((Renderer.material.color.r * 0.2f) / 1, (Renderer.material.color.g * 0.2f) / 1, (Renderer.material.color.b * 0.2f) / 1);
+    Color newColor = new Color((Renderer.material.color.r * 0.5f) / 1, (Renderer.material.color.g * 0.5f) / 1, (Renderer.material.color.b * 0.5f) / 1);
     Renderer.material.SetColor("_EmissionColor", newColor * 2.0f);
   }
 
@@ -95,12 +103,24 @@ public class AudioPlayer : MonoBehaviour {
     {
       AudioManager.GetInstance().SetHasCollideWithObstacle(true);
       AudioManager.GetInstance().SetScore(-300);
+
+      FeedBackPoints.text = "-300";
+      FeedBackPoints.color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+      FeedBackPoints.gameObject.SetActive(true);
+      IsFading = true;
+
       Destroy(other.gameObject);
     }
 
     if (other.gameObject.tag == "Points")
     {
       AudioManager.GetInstance().SetScore(500);
+
+      FeedBackPoints.text = "+500";
+      FeedBackPoints.color = new Vector4(1.0f,1.0f,1.0f,1.0f);
+      FeedBackPoints.gameObject.SetActive(true);
+      IsFading = true;
+
       Destroy(other.gameObject);
     }
   }
@@ -121,5 +141,23 @@ public class AudioPlayer : MonoBehaviour {
 
     else if (AudioManager.GetInstance().GetActivity(Position) >= 20 && AudioManager.GetInstance().GetActivity(Position) < 25)
       AudioManager.GetInstance().SetScore(5);
+  }
+
+  void Fading()
+  {
+    if (IsFading)
+    {
+      if(FeedBackPoints.color.a <= 0.0f)
+      {
+        FeedBackPoints.gameObject.SetActive(false);
+        IsFading = true;
+      }
+      else
+      {
+        float alpha = FeedBackPoints.color.a;
+        alpha -= 0.01f;
+        FeedBackPoints.color = new Vector4(1.0f, 1.0f, 1.0f, alpha);
+      }
+    }
   }
 }

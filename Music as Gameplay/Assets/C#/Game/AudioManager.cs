@@ -23,6 +23,7 @@ public class AudioManager : MonoBehaviour{
   private int Score;
   private int[] Activity = new int[16];
   private int[] Multiplier = new int[16];
+  private bool[] ActivateParticles = new bool[16];
 
   public static AudioManager GetInstance()
   {
@@ -51,6 +52,8 @@ public class AudioManager : MonoBehaviour{
 
       Activity[i] = 0;
       Multiplier[i] = 0;
+
+      ActivateParticles[i] = false;
     }
 
     HasCollideWithObstacle = false;
@@ -265,6 +268,16 @@ public class AudioManager : MonoBehaviour{
   public int GetMultiplier(int band)
   {
     return Multiplier[band];
+  }
+
+  public void SetActivateParticles(int band, bool result)
+  {
+    ActivateParticles[band] = result;
+  }
+
+  public bool GetActivateParticles(int band)
+  {
+    return ActivateParticles[band];
   }
 
 

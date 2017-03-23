@@ -55,8 +55,8 @@ public class AudioObstacle : MonoBehaviour {
 
   void Scale()
   {
-    transform.localScale = new Vector3((AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.5f,
-                                       (AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.5f, 
-                                       (AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.5f);
+    transform.localScale = new Vector3((AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.2f,
+                                       (AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.2f, 
+                                       (AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.2f);
   }
 }

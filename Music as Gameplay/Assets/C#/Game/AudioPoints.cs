@@ -50,13 +50,16 @@ public class AudioPoints : MonoBehaviour {
     }
 
     if (other.gameObject.tag == "Player")
+    {
       AudioManager.GetInstance().SetActivity(Band, -1);
+      AudioManager.GetInstance().SetActivateParticles(Band, true);
+    }
   }
 
   void Scale()
   {
-    transform.localScale = new Vector3((AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.5f,
-                                       (AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.5f,
-                                       (AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.5f);
+    transform.localScale = new Vector3((AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.2f,
+                                       (AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.2f,
+                                       (AudioManager.GetInstance().GetResultBackGround(Band) * 0.4f) + 0.2f);
   }
 }
