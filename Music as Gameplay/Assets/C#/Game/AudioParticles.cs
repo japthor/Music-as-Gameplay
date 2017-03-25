@@ -15,15 +15,16 @@ public class AudioParticles : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
   {
-    ActivateParticle();
+    if (!AudioManager.GetInstance.GetIsPaused())
+      ActivateParticle();
   }
 
   void ActivateParticle()
   {
-    if (AudioManager.GetInstance().GetActivateParticles(Band))
+    if (AudioManager.GetInstance.GetActivateParticles(Band))
     {
       Particles.Play();
-      AudioManager.GetInstance().SetActivateParticles(Band, false);
+      AudioManager.GetInstance.SetActivateParticles(Band, false);
     }
   }
 }

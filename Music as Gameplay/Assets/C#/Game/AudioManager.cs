@@ -1,54 +1,63 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 
 public class AudioManager : MonoBehaviour{
 
   private static AudioManager Instance;
-  private float[] MuteFrequencyBand = new float[16];
-  private float[] MuteMaximumValue = new float[16];
-  private float[] MuteResult = new float[16];
 
-  private float[] NoMuteFrequencyBand = new float[16];
-  private float[] NoMuteMaximumValue = new float[16];
-  private float[] NoMuteResult = new float[16];
+  private float[] MusicFrequencyBand = new float[16];
+  private float[] MusicMaximumValue = new float[16];
+  private float[] MusicResult = new float[16];
 
-  private float[] FrequencyBandBackGround = new float[16];
-  private float[] MaximumValueBackGround = new float[16];
-  private float[] ResultBackGround = new float[16];
+  private float[] AlteredFrequencyBand = new float[16];
+  private float[] AlteredMaximumValue = new float[16];
+  private float[] AlteredResult = new float[16];
 
   private bool HasCollideWithObstacle;
 
-  public Text ScoreText;
   private int Score;
   private int[] Activity = new int[16];
   private int[] Multiplier = new int[16];
   private bool[] ActivateParticles = new bool[16];
 
-  public static AudioManager GetInstance()
+  private bool IsPaused;
+  private float Volume;
+
+  public static AudioManager GetInstance
   {
-    if (Instance == null)
+    get
     {
-      Instance = GameObject.FindObjectOfType<AudioManager>();
+      if (Instance == null)
+        Instance = new GameObject("AudioManager").AddComponent<AudioManager>();
+      return Instance;
+
     }
-    return Instance;
+  }
+
+  void Awake()
+  {
+    if (Instance)
+    {
+      DestroyImmediate(gameObject);
+    }else
+    {
+      Instance = this;
+      DontDestroyOnLoad(gameObject);
+    }
+
   }
 
   void Start()
   {
     for(int i = 0; i < 16; i++)
     {
-      MuteFrequencyBand[i] = 0.0f;
-      MuteMaximumValue[i] = 1.0f;
-      MuteResult[i] = 0.0f;
+      MusicFrequencyBand[i] = 0.0f;
+      MusicMaximumValue[i] = 1.0f;
+      MusicResult[i] = 0.0f;
 
-      NoMuteFrequencyBand[i] = 0.0f;
-      NoMuteMaximumValue[i] = 1.0f;
-      NoMuteResult[i] = 0.0f;
-
-      FrequencyBandBackGround[i] = 0.0f;
-      MaximumValueBackGround[i] = 1.0f;
-      ResultBackGround[i] = 0.0f;
+      AlteredFrequencyBand[i] = 0.0f;
+      AlteredMaximumValue[i] = 1.0f;
+      AlteredResult[i] = 0.0f;
 
       Activity[i] = 0;
       Multiplier[i] = 0;
@@ -58,166 +67,117 @@ public class AudioManager : MonoBehaviour{
 
     HasCollideWithObstacle = false;
     Score = 0;
+
+    IsPaused = false;
+    Volume = 1.0f;
   }
 
   void Update()
   {
-    SetScoreText();
+
   }
 
-  public void SetMuteFrequencyBand(int band, float frequency)
+  public void SetMusicFrequencyBand(int band, float frequency)
   {
-    MuteFrequencyBand[band] = frequency;
+    MusicFrequencyBand[band] = frequency;
   }
 
-  public float GetMuteFrequencyBand(int band)
+  public float GetMusicFrequencyBand(int band)
   {
-    return MuteFrequencyBand[band];
+    return MusicFrequencyBand[band];
   }
 
-  public void SetMuteMaximumValue(int band, float value)
+  public void SetMusicMaximumValue(int band, float value)
   {
-    MuteMaximumValue[band] = value;
+    MusicMaximumValue[band] = value;
   }
 
-  public float GetMuteMaximumValue(int band)
+  public float GetMusicMaximumValue(int band)
   {
-    return MuteMaximumValue[band];
+    return MusicMaximumValue[band];
   }
 
-  public void SetMuteResult(int band, float result)
+  public void SetMusicResult(int band, float result)
   {
-    MuteResult[band] = result;
+    MusicResult[band] = result;
   }
 
-  public float GetMuteResult(int band)
+  public float GetMusicResult(int band)
   {
-    return MuteResult[band];
+    return MusicResult[band];
   }
 
-  public void MuteLinearMapping(int band)
+  public void MusicLinearMapping(int band)
   {
-    float value = MuteFrequencyBand[band];
+    float value = MusicFrequencyBand[band];
 
     if (value < 0)
     {
       value = 0;
     }
 
-    if (value > MuteMaximumValue[band])
+    if (value > MusicMaximumValue[band])
     {
-      MuteMaximumValue[band] = MuteFrequencyBand[band];
+      MusicMaximumValue[band] = MusicFrequencyBand[band];
     }
 
-    MuteResult[band] = (value - 0) / (MuteMaximumValue[band] - 0);
+    MusicResult[band] = (value - 0) / (MusicMaximumValue[band] - 0);
 
-    if (float.IsNaN(MuteResult[band]))
+    if (float.IsNaN(MusicResult[band]))
     {
-      MuteResult[band] = 0;
+      MusicResult[band] = 0;
     }
   }
 
-  public void SetNoMuteFrequencyBand(int band, float frequency)
+  public void SetAlteredFrequencyBand(int band, float frequency)
   {
-    NoMuteFrequencyBand[band] = frequency;
+    AlteredFrequencyBand[band] = frequency;
   }
 
-  public float GetNoMuteFrequencyBand(int band)
+  public float GetAlteredFrequencyBand(int band)
   {
-    return NoMuteFrequencyBand[band];
+    return AlteredFrequencyBand[band];
   }
 
-  public void SetNoMuteMaximumValue(int band, float value)
+  public void SetAlteredMaximumValue(int band, float value)
   {
-    NoMuteMaximumValue[band] = value;
+    AlteredMaximumValue[band] = value;
   }
 
-  public float GetNoMuteMaximumValue(int band)
+  public float GetAlteredMaximumValue(int band)
   {
-    return NoMuteMaximumValue[band];
+    return AlteredMaximumValue[band];
   }
 
-  public void SetNoMuteResult(int band, float result)
+  public void SetAlteredResult(int band, float result)
   {
-    NoMuteResult[band] = result;
+    AlteredResult[band] = result;
   }
 
-  public float GetNoMuteResult(int band)
+  public float GetAlteredResult(int band)
   {
-    return NoMuteResult[band];
+    return AlteredResult[band];
   }
 
-  public void NoMuteLinearMapping(int band)
+  public void AlteredLinearMapping(int band)
   {
-    float value = NoMuteFrequencyBand[band];
+    float value = AlteredFrequencyBand[band];
 
     if (value < 0)
     {
       value = 0;
     }
 
-    if (value > NoMuteMaximumValue[band])
+    if (value > AlteredMaximumValue[band])
     {
-      NoMuteMaximumValue[band] = NoMuteFrequencyBand[band];
+      AlteredMaximumValue[band] = AlteredFrequencyBand[band];
     }
 
-    NoMuteResult[band] = (value - 0) / (NoMuteMaximumValue[band] - 0);
+    AlteredResult[band] = (value - 0) / (AlteredMaximumValue[band] - 0);
 
-    if (float.IsNaN(NoMuteResult[band]))
+    if (float.IsNaN(AlteredResult[band]))
     {
-      NoMuteResult[band] = 0;
-    }
-  }
-
-  public void SetFrequencyBandBackGround(int band, float frequency)
-  {
-    FrequencyBandBackGround[band] = frequency;
-  }
-
-  public float GetFrequencyBandBackGround(int band)
-  {
-    return FrequencyBandBackGround[band];
-  }
-
-  public void SetMaximumValueBackGround(int band, float value)
-  {
-    MaximumValueBackGround[band] = value;
-  }
-
-  public float GetMaximumValueBackGround(int band)
-  {
-    return MaximumValueBackGround[band];
-  }
-
-  public void SetResultBackGround(int band, float result)
-  {
-    ResultBackGround[band] = result;
-  }
-
-  public float GetResultBackGround(int band)
-  {
-    return ResultBackGround[band];
-  }
-
-  public void LinearMappingBackGround(int band)
-  {
-    float value = FrequencyBandBackGround[band];
-
-    if (value < 0)
-    {
-      value = 0;
-    }
-
-    if (value > MaximumValueBackGround[band])
-    {
-      MaximumValueBackGround[band] = FrequencyBandBackGround[band];
-    }
-
-    ResultBackGround[band] = (value - 0) / (MaximumValueBackGround[band] - 0);
-
-    if (float.IsNaN(ResultBackGround[band]))
-    {
-      ResultBackGround[band] = 0;
+      AlteredResult[band] = 0;
     }
   }
 
@@ -229,12 +189,6 @@ public class AudioManager : MonoBehaviour{
   public bool GetHasCollideWithObstacle()
   {
     return HasCollideWithObstacle;
-  }
-
-  private void SetScoreText()
-  {
-    if(ScoreText != null)
-      ScoreText.text = Score.ToString();
   }
 
   public void SetScore(int result)
@@ -280,5 +234,48 @@ public class AudioManager : MonoBehaviour{
     return ActivateParticles[band];
   }
 
+  public void SetIsPaused(bool result)
+  {
+    IsPaused = result;
+  }
 
+  public bool GetIsPaused()
+  {
+    return IsPaused;
+  }
+
+  public void SetVolume(float result)
+  {
+    Volume = result;
+  }
+
+  public float GetVolume()
+  {
+    return Volume;
+  }
+
+  public void ResetVariables()
+  {
+    for (int i = 0; i < 16; i++)
+    {
+      MusicFrequencyBand[i] = 0.0f;
+      MusicMaximumValue[i] = 1.0f;
+      MusicResult[i] = 0.0f;
+
+      AlteredFrequencyBand[i] = 0.0f;
+      AlteredMaximumValue[i] = 1.0f;
+      AlteredResult[i] = 0.0f;
+
+      Activity[i] = 0;
+      Multiplier[i] = 0;
+
+      ActivateParticles[i] = false;
+    }
+
+    HasCollideWithObstacle = false;
+    Score = 0;
+
+    IsPaused = false;
+    //Volume = 1.0f;
+  }
 }

@@ -3,12 +3,10 @@ using System.Collections;
 
 public class AudioComposition : MonoBehaviour {
 
-  AudioSource AudioSource;
-  float[] Samples = new float[1024];
-  float[] VelocityFrequencyBand = new float[16];
-  float NumberOfBands;
-
-  public bool IsMuteMusic;
+  private AudioSource AudioSource;
+  private float[] Samples = new float[1024];
+  private float[] VelocityFrequencyBand = new float[16];
+  private float NumberOfBands;
 
   // Use this for initialization
   void Start ()
@@ -20,11 +18,10 @@ public class AudioComposition : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
   {
-    GetSpectrumData();
-    IntegrateFrequency();
-
-    if (!IsMuteMusic)
+    if (!AudioManager.GetInstance.GetIsPaused())
     {
+      GetSpectrumData();
+      IntegrateFrequency();
       IntegrateVelocity();
     }
   }
@@ -51,36 +48,27 @@ public class AudioComposition : MonoBehaviour {
         average += Samples[count] * (count + 1);
         count++;
       }
-     
-      if (IsMuteMusic)
-      {
-        AudioManager.GetInstance().SetMuteFrequencyBand(i, (average / count) * 10);
-      }
-      else
-      {
-        AudioManager.GetInstance().SetNoMuteFrequencyBand(i, (average / count) * 10);
-      }
+
+      AudioManager.GetInstance.SetMusicFrequencyBand(i, (average / count) * 10);
     }
 
   }
-
-
 
   void IntegrateVelocity()
   {
     for (int i = 0; i < NumberOfBands; i++)
     {
-      if (AudioManager.GetInstance().GetNoMuteFrequencyBand(i) > AudioManager.GetInstance().GetFrequencyBandBackGround(i))
+      if (AudioManager.GetInstance.GetMusicFrequencyBand(i) > AudioManager.GetInstance.GetAlteredFrequencyBand(i))
       {
-        AudioManager.GetInstance().SetFrequencyBandBackGround(i, AudioManager.GetInstance().GetNoMuteFrequencyBand(i));
+        AudioManager.GetInstance.SetAlteredFrequencyBand(i, AudioManager.GetInstance.GetMusicFrequencyBand(i));
         VelocityFrequencyBand[i] = 0.001f;
       }
 
-      if (AudioManager.GetInstance().GetNoMuteFrequencyBand(i) < AudioManager.GetInstance().GetFrequencyBandBackGround(i))
+      if (AudioManager.GetInstance.GetMusicFrequencyBand(i) < AudioManager.GetInstance.GetAlteredFrequencyBand(i))
       {
-        float CopyFrequencyBand = AudioManager.GetInstance().GetFrequencyBandBackGround(i);
+        float CopyFrequencyBand = AudioManager.GetInstance.GetAlteredFrequencyBand(i);
         CopyFrequencyBand -= VelocityFrequencyBand[i];
-        AudioManager.GetInstance().SetFrequencyBandBackGround(i, CopyFrequencyBand);
+        AudioManager.GetInstance.SetAlteredFrequencyBand(i, CopyFrequencyBand);
         VelocityFrequencyBand[i] *= 1.15f;
       }
     }

@@ -31,10 +31,13 @@ public class AudioPlayer : MonoBehaviour {
 
 	void Update ()
   {
-    Movement();
-    Move();
-    ScoreActivityRoad();
-    Fading();
+    if (!AudioManager.GetInstance.GetIsPaused())
+    {
+      Movement();
+      Move();
+      ScoreActivityRoad();
+      Fading();
+    }
   }
 
   void Movement()
@@ -101,8 +104,8 @@ public class AudioPlayer : MonoBehaviour {
   {
     if (other.gameObject.tag == "Obstacle")
     {
-      AudioManager.GetInstance().SetHasCollideWithObstacle(true);
-      AudioManager.GetInstance().SetScore(-300);
+      AudioManager.GetInstance.SetHasCollideWithObstacle(true);
+      AudioManager.GetInstance.SetScore(-300);
 
       FeedBackPoints.text = "-300";
       FeedBackPoints.color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -114,7 +117,7 @@ public class AudioPlayer : MonoBehaviour {
 
     if (other.gameObject.tag == "Points")
     {
-      AudioManager.GetInstance().SetScore(500);
+      AudioManager.GetInstance.SetScore(500);
 
       FeedBackPoints.text = "+500";
       FeedBackPoints.color = new Vector4(1.0f,1.0f,1.0f,1.0f);
@@ -127,20 +130,20 @@ public class AudioPlayer : MonoBehaviour {
 
   void ScoreActivityRoad()
   {
-    if (AudioManager.GetInstance().GetActivity(Position) >= 1 && AudioManager.GetInstance().GetActivity(Position) < 5)
-      AudioManager.GetInstance().SetScore(1);
+    if (AudioManager.GetInstance.GetActivity(Position) >= 1 && AudioManager.GetInstance.GetActivity(Position) < 5)
+      AudioManager.GetInstance.SetScore(1);
 
-    else if (AudioManager.GetInstance().GetActivity(Position) >= 5 && AudioManager.GetInstance().GetActivity(Position) < 10)
-      AudioManager.GetInstance().SetScore(2);
+    else if (AudioManager.GetInstance.GetActivity(Position) >= 5 && AudioManager.GetInstance.GetActivity(Position) < 10)
+      AudioManager.GetInstance.SetScore(2);
 
-    else if (AudioManager.GetInstance().GetActivity(Position) >= 10 && AudioManager.GetInstance().GetActivity(Position) < 15)
-      AudioManager.GetInstance().SetScore(3);
+    else if (AudioManager.GetInstance.GetActivity(Position) >= 10 && AudioManager.GetInstance.GetActivity(Position) < 15)
+      AudioManager.GetInstance.SetScore(3);
 
-    else if (AudioManager.GetInstance().GetActivity(Position) >= 15 && AudioManager.GetInstance().GetActivity(Position) < 20)
-      AudioManager.GetInstance().SetScore(4);
+    else if (AudioManager.GetInstance.GetActivity(Position) >= 15 && AudioManager.GetInstance.GetActivity(Position) < 20)
+      AudioManager.GetInstance.SetScore(4);
 
-    else if (AudioManager.GetInstance().GetActivity(Position) >= 20 && AudioManager.GetInstance().GetActivity(Position) < 25)
-      AudioManager.GetInstance().SetScore(5);
+    else if (AudioManager.GetInstance.GetActivity(Position) >= 20 && AudioManager.GetInstance.GetActivity(Position) < 25)
+      AudioManager.GetInstance.SetScore(5);
   }
 
   void Fading()

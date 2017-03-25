@@ -18,15 +18,18 @@ public class AudioSpawnObstacle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-    AudioManager.GetInstance().NoMuteLinearMapping(Band);
-    Timer();
+    if (!AudioManager.GetInstance.GetIsPaused())
+    {
+      AudioManager.GetInstance.MusicLinearMapping(Band);
+      Timer();
+    }
   }
 
   void Timer()
   {
     if (SecondsToSpawn <= 0.0f)
     {
-      if (AudioManager.GetInstance().GetNoMuteResult(Band) >= 0.8f)
+      if (AudioManager.GetInstance.GetMusicResult(Band) >= 0.8f)
       {
         Spawn();
         SecondsToSpawn = Seconds;
@@ -43,12 +46,12 @@ public class AudioSpawnObstacle : MonoBehaviour {
     if(value >= 9)
     {
       Instantiate(Points, PositionToSpawn.position, Quaternion.identity);
-      AudioManager.GetInstance().SetActivity(Band, 1);
+      AudioManager.GetInstance.SetActivity(Band, 1);
     }
     else
     {
       Instantiate(Obstacle, PositionToSpawn.position, Quaternion.identity);
-      AudioManager.GetInstance().SetActivity(Band, 1);
+      AudioManager.GetInstance.SetActivity(Band, 1);
     }
   }
 }
