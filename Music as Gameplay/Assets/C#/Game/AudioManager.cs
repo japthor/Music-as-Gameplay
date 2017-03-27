@@ -15,6 +15,10 @@ public class AudioManager : MonoBehaviour{
 
   private bool HasCollideWithObstacle;
 
+  private float ObjectsVelocity;
+  private float MinObjectsVelocity;
+  private float MaxObjectsVelocity;
+
   private int Score;
   private int[] Activity = new int[16];
   private int[] Multiplier = new int[16];
@@ -22,6 +26,10 @@ public class AudioManager : MonoBehaviour{
 
   private bool IsPaused;
   private float Volume;
+
+  private int Songs;
+
+  private bool IsGameFinished;
 
   public static AudioManager GetInstance
   {
@@ -66,10 +74,17 @@ public class AudioManager : MonoBehaviour{
     }
 
     HasCollideWithObstacle = false;
+    ObjectsVelocity = 6.0f;
+    MinObjectsVelocity = ObjectsVelocity;
+    MaxObjectsVelocity = 10.0f;
+
     Score = 0;
 
     IsPaused = false;
     Volume = 1.0f;
+    Songs =  1;
+
+    IsGameFinished = false;
   }
 
   void Update()
@@ -191,12 +206,58 @@ public class AudioManager : MonoBehaviour{
     return HasCollideWithObstacle;
   }
 
-  public void SetScore(int result)
+  public void DecreaseObjectsVelocity(float result)
   {
-    if (Score < 0)
+    if (ObjectsVelocity <= MinObjectsVelocity)
+      ObjectsVelocity = MinObjectsVelocity;
+    else
+      ObjectsVelocity -= result;
+  }
+
+  public void IncreaseObjectsVelocity(float result)
+  {
+    if (ObjectsVelocity >= MaxObjectsVelocity)
+      ObjectsVelocity = MaxObjectsVelocity;
+    else
+      ObjectsVelocity += result;
+  }
+
+  public float GetObjectsVelocity()
+  {
+    return ObjectsVelocity;
+  }
+
+  public void SetMinObjectsVelocity(float result)
+  {
+    MinObjectsVelocity = result;
+  }
+
+  public float GetMinObjectsVelocity()
+  {
+    return MinObjectsVelocity;
+  }
+
+  public void SetMaxObjectsVelocity(float result)
+  {
+    MaxObjectsVelocity = result;
+  }
+
+  public float GetMaxObjectsVelocity()
+  {
+    return MaxObjectsVelocity;
+  }
+
+  public void AddScore(int result)
+  {
+      Score += result;
+  }
+
+  public void SubstractScore(int result)
+  {
+    if (Score - result <= 0)
       Score = 0;
     else
-      Score += result;
+      Score -= result;
   }
 
   public int GetScore()
@@ -254,6 +315,26 @@ public class AudioManager : MonoBehaviour{
     return Volume;
   }
 
+  public void SetSongs(int result)
+  {
+    Songs = result;
+  }
+
+  public int GetSongs()
+  {
+    return Songs;
+  }
+
+  public void SetIsGameFinished(bool result)
+  {
+    IsGameFinished = result;
+  }
+
+  public bool GetIsGameFinished()
+  {
+    return IsGameFinished;
+  }
+
   public void ResetVariables()
   {
     for (int i = 0; i < 16; i++)
@@ -273,9 +354,13 @@ public class AudioManager : MonoBehaviour{
     }
 
     HasCollideWithObstacle = false;
+    ObjectsVelocity = 6.0f;
+
     Score = 0;
 
     IsPaused = false;
+    IsGameFinished = false;
+
     //Volume = 1.0f;
   }
 }

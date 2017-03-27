@@ -7,9 +7,11 @@ public class PauseMenuManager : MonoBehaviour {
 
   public Transform PauseMenu;
   public Transform OptionsMenu;
+  public Transform GameOverMenu;
   public AudioSource BackGroundMusic;
   public AudioSource ObjectsMusic;
   public Slider VolumeSlider;
+  public Text FinalScore;
 
   // Use this for initialization
   void Start ()
@@ -21,14 +23,19 @@ public class PauseMenuManager : MonoBehaviour {
 	void Update ()
   {
     if (!AudioManager.GetInstance.GetIsPaused())
-    {
       ActivatePauseMenu();
+
+    if (AudioManager.GetInstance.GetIsGameFinished())
+    {
+      AudioManager.GetInstance.SetIsPaused(true);
+      GameOverMenu.gameObject.SetActive(true);
+      FinalScore.text = AudioManager.GetInstance.GetScore().ToString() + " Points";
     }
 	}
 
   void ActivatePauseMenu()
   {
-    if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
+    if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) && !AudioManager.GetInstance.GetIsGameFinished())
     {
       if (!PauseMenu.gameObject.activeInHierarchy)
       {
@@ -54,7 +61,6 @@ public class PauseMenuManager : MonoBehaviour {
   public void GoMainMenu(int scene)
   {
     SceneManager.LoadScene(scene);
-    AudioManager.GetInstance.ResetVariables();
   }
 
   public void ActivateOptionsMenu()

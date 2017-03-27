@@ -4,14 +4,12 @@ using System.Collections;
 public class AudioPoints : MonoBehaviour {
 
   private Material Material;
-  private float Velocity;
   private bool IsMovingDown;
   public int Band;
 
   void Start()
   {
     Material = GetComponent<MeshRenderer>().materials[0];
-    Velocity = 6.5f;
     Brightness(0.9f);
   }
 
@@ -33,9 +31,9 @@ public class AudioPoints : MonoBehaviour {
   void Movement()
   {
     if (IsMovingDown)
-      transform.Translate(Vector3.down * Velocity * Time.deltaTime);
+      transform.Translate(Vector3.down * AudioManager.GetInstance.GetObjectsVelocity() * Time.deltaTime);
     else
-      transform.Translate(Vector3.back * Velocity * Time.deltaTime);
+      transform.Translate(Vector3.back * AudioManager.GetInstance.GetObjectsVelocity() * Time.deltaTime);
   }
 
   void OnTriggerEnter(Collider other)
@@ -56,6 +54,7 @@ public class AudioPoints : MonoBehaviour {
     {
       AudioManager.GetInstance.SetActivity(Band, -1);
       AudioManager.GetInstance.SetActivateParticles(Band, true);
+      AudioManager.GetInstance.IncreaseObjectsVelocity(0.5f);
     }
   }
 

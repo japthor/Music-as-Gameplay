@@ -4,6 +4,7 @@ using System.Collections;
 public class AudioPlayMusic : MonoBehaviour {
 
   private float SecondsToStartMusic;
+  private float SecondsToFinishGame;
   private AudioSource AudioSource;
   private bool Play;
 
@@ -11,10 +12,25 @@ public class AudioPlayMusic : MonoBehaviour {
   void Start ()
   {
     SecondsToStartMusic = 3.0f;
+    SecondsToFinishGame = 6.0f;
     AudioSource = GetComponent<AudioSource>();
     Play = false;
-    
-    if(gameObject.tag == "BackGroundMusic")
+
+    switch (AudioManager.GetInstance.GetSongs())
+    {
+      case 1:
+        AudioSource.clip = Resources.Load("Tobu - Infectious") as AudioClip;
+        break;
+
+      case 2:
+        AudioSource.clip = Resources.Load("Alan Walker - Fade") as AudioClip;
+        break;
+
+      default:
+        break;
+    }
+
+    if (gameObject.tag == "BackGroundMusic")
       AudioSource.volume = AudioManager.GetInstance.GetVolume();
   }
 	
@@ -22,7 +38,10 @@ public class AudioPlayMusic : MonoBehaviour {
 	void Update ()
   {
     if (!AudioManager.GetInstance.GetIsPaused())
+    {
       PlayMusic();
+      EndGame();
+    }
   }
 
   void PlayMusic()
@@ -37,5 +56,16 @@ public class AudioPlayMusic : MonoBehaviour {
     }
     else
       SecondsToStartMusic -= Time.deltaTime;
+  }
+
+  void EndGame()
+  {
+    if (!AudioSource.isPlaying && Play)
+    {
+      if (SecondsToFinishGame <= 0.0f)
+        AudioManager.GetInstance.SetIsGameFinished(true);
+      else
+        SecondsToFinishGame -= Time.deltaTime;
+    }
   }
 }

@@ -13,6 +13,7 @@ public class AudioPlayer : MonoBehaviour {
   private Renderer Renderer;
 
   private TextMesh FeedBackPoints;
+  private TextMesh FeedBackSpeed;
   private bool IsFading;
 
   void Start ()
@@ -24,8 +25,10 @@ public class AudioPlayer : MonoBehaviour {
     Renderer = GetComponent<Renderer>();
     ChangeMaterial();
 
-    FeedBackPoints = GameObject.Find("FeedbackPointsText").GetComponent<TextMesh>();
+    FeedBackPoints = GameObject.Find("FeedBackPointsText").GetComponent<TextMesh>();
     FeedBackPoints.gameObject.SetActive(false);
+    FeedBackSpeed = GameObject.Find("FeedBackSpeedText").GetComponent<TextMesh>();
+    FeedBackSpeed.gameObject.SetActive(false);
     IsFading = false;
   }
 
@@ -105,11 +108,19 @@ public class AudioPlayer : MonoBehaviour {
     if (other.gameObject.tag == "Obstacle")
     {
       AudioManager.GetInstance.SetHasCollideWithObstacle(true);
-      AudioManager.GetInstance.SetScore(-300);
+      AudioManager.GetInstance.SubstractScore(300);
 
       FeedBackPoints.text = "-300";
       FeedBackPoints.color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
       FeedBackPoints.gameObject.SetActive(true);
+
+      if(AudioManager.GetInstance.GetObjectsVelocity() > AudioManager.GetInstance.GetMinObjectsVelocity())
+      {
+        FeedBackSpeed.text = "-Speed";
+        FeedBackSpeed.color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        FeedBackSpeed.gameObject.SetActive(true);
+      }
+
       IsFading = true;
 
       Destroy(other.gameObject);
@@ -117,11 +128,19 @@ public class AudioPlayer : MonoBehaviour {
 
     if (other.gameObject.tag == "Points")
     {
-      AudioManager.GetInstance.SetScore(500);
+      AudioManager.GetInstance.AddScore(500);
 
       FeedBackPoints.text = "+500";
       FeedBackPoints.color = new Vector4(1.0f,1.0f,1.0f,1.0f);
       FeedBackPoints.gameObject.SetActive(true);
+
+      if (AudioManager.GetInstance.GetObjectsVelocity() < AudioManager.GetInstance.GetMaxObjectsVelocity())
+      {
+        FeedBackSpeed.text = "+Speed";
+        FeedBackSpeed.color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        FeedBackSpeed.gameObject.SetActive(true);
+      }
+
       IsFading = true;
 
       Destroy(other.gameObject);
@@ -131,28 +150,29 @@ public class AudioPlayer : MonoBehaviour {
   void ScoreActivityRoad()
   {
     if (AudioManager.GetInstance.GetActivity(Position) >= 1 && AudioManager.GetInstance.GetActivity(Position) < 5)
-      AudioManager.GetInstance.SetScore(1);
+      AudioManager.GetInstance.AddScore(1);
 
     else if (AudioManager.GetInstance.GetActivity(Position) >= 5 && AudioManager.GetInstance.GetActivity(Position) < 10)
-      AudioManager.GetInstance.SetScore(2);
+      AudioManager.GetInstance.AddScore(2);
 
     else if (AudioManager.GetInstance.GetActivity(Position) >= 10 && AudioManager.GetInstance.GetActivity(Position) < 15)
-      AudioManager.GetInstance.SetScore(3);
+      AudioManager.GetInstance.AddScore(3);
 
     else if (AudioManager.GetInstance.GetActivity(Position) >= 15 && AudioManager.GetInstance.GetActivity(Position) < 20)
-      AudioManager.GetInstance.SetScore(4);
+      AudioManager.GetInstance.AddScore(4);
 
     else if (AudioManager.GetInstance.GetActivity(Position) >= 20 && AudioManager.GetInstance.GetActivity(Position) < 25)
-      AudioManager.GetInstance.SetScore(5);
+      AudioManager.GetInstance.AddScore(5);
   }
 
   void Fading()
   {
     if (IsFading)
     {
-      if(FeedBackPoints.color.a <= 0.0f)
+      if(FeedBackPoints.color.a <= 0.0f && FeedBackSpeed.color.a <=0)
       {
         FeedBackPoints.gameObject.SetActive(false);
+        FeedBackSpeed.gameObject.SetActive(false);
         IsFading = true;
       }
       else
@@ -160,6 +180,7 @@ public class AudioPlayer : MonoBehaviour {
         float alpha = FeedBackPoints.color.a;
         alpha -= 0.01f;
         FeedBackPoints.color = new Vector4(1.0f, 1.0f, 1.0f, alpha);
+        FeedBackSpeed.color = new Vector4(1.0f, 1.0f, 1.0f, alpha);
       }
     }
   }
