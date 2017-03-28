@@ -43,6 +43,7 @@ public class PauseMenuManager : MonoBehaviour {
         BackGroundMusic.Pause();
         ObjectsMusic.Pause();
         AudioManager.GetInstance.SetIsPaused(true);
+        Time.timeScale = 0;
       }
     }
   }
@@ -55,11 +56,13 @@ public class PauseMenuManager : MonoBehaviour {
       BackGroundMusic.UnPause();
       ObjectsMusic.UnPause();
       AudioManager.GetInstance.SetIsPaused(false);
+      Time.timeScale = 1;
     }
   }
 
   public void GoMainMenu(int scene)
   {
+    Time.timeScale = 1;
     SceneManager.LoadScene(scene);
   }
 

@@ -20,9 +20,12 @@ public class AudioParticles : MonoBehaviour {
     {
       if(Particles.tag == "Fireworks")
         ActivateFireworksParticles();
-      else
+      else if(Particles.tag == "Stars")
         ActivateStarsParticles();
     }
+
+    if (AudioManager.GetInstance.GetIsGameFinished())
+      Particles.Stop();
   }
 
   void ActivateStarsParticles()

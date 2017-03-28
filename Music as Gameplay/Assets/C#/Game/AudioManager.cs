@@ -14,6 +14,7 @@ public class AudioManager : MonoBehaviour{
   private float[] AlteredResult = new float[16];
 
   private bool HasCollideWithObstacle;
+  private int PlayerPosition;
 
   private float ObjectsVelocity;
   private float MinObjectsVelocity;
@@ -30,6 +31,9 @@ public class AudioManager : MonoBehaviour{
   private int Songs;
 
   private bool IsGameFinished;
+
+  private bool GotPowerUp;
+  private bool IsActivePowerUp;
 
   public static AudioManager GetInstance
   {
@@ -74,6 +78,8 @@ public class AudioManager : MonoBehaviour{
     }
 
     HasCollideWithObstacle = false;
+    PlayerPosition = 7;
+
     ObjectsVelocity = 6.0f;
     MinObjectsVelocity = ObjectsVelocity;
     MaxObjectsVelocity = 10.0f;
@@ -85,6 +91,8 @@ public class AudioManager : MonoBehaviour{
     Songs =  1;
 
     IsGameFinished = false;
+    GotPowerUp = false;
+    IsActivePowerUp = false;
   }
 
   void Update()
@@ -204,6 +212,16 @@ public class AudioManager : MonoBehaviour{
   public bool GetHasCollideWithObstacle()
   {
     return HasCollideWithObstacle;
+  }
+
+  public void SetPlayerPosition(int result)
+  {
+    PlayerPosition = result;
+  }
+
+  public int GetPlayerPosition()
+  {
+    return PlayerPosition;
   }
 
   public void DecreaseObjectsVelocity(float result)
@@ -335,6 +353,26 @@ public class AudioManager : MonoBehaviour{
     return IsGameFinished;
   }
 
+  public void SetIsActivePowerUp(bool result)
+  {
+    IsActivePowerUp = result;
+  }
+
+  public bool GetIsActivePowerUp()
+  {
+    return IsActivePowerUp;
+  }
+
+  public void SetGotPowerUp(bool result)
+  {
+    GotPowerUp = result;
+  }
+
+  public bool GetGotPowerUp()
+  {
+    return GotPowerUp;
+  }
+
   public void ResetVariables()
   {
     for (int i = 0; i < 16; i++)
@@ -354,12 +392,16 @@ public class AudioManager : MonoBehaviour{
     }
 
     HasCollideWithObstacle = false;
+    PlayerPosition = 7;
+
     ObjectsVelocity = 6.0f;
 
     Score = 0;
 
     IsPaused = false;
     IsGameFinished = false;
+    GotPowerUp = false;
+    IsActivePowerUp = false;
 
     //Volume = 1.0f;
   }
