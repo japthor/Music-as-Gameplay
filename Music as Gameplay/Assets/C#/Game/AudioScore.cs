@@ -9,15 +9,11 @@ public class AudioScore : MonoBehaviour {
   private TextMesh FeedBackPoints;
   private TextMesh FeedBackSpeed;
   private TextMesh FeedBackPowerUp;
+  private TextMesh FeedBackPowerUpTime;
 
-  private enum FeedBack
-  {
-    kFeedBack_Points,
-    kFeedBack_Speed,
-    kFeedBack_PowerUp
-  }
-
-  private bool IsFading;
+  private bool IsFadingPoints;
+  private bool IsFadingSpeed;
+  private bool IsFadingPowerUp;
 
   // Use this for initialization
   void Start ()
@@ -31,15 +27,27 @@ public class AudioScore : MonoBehaviour {
     FeedBackPowerUp = GameObject.Find("FeedBackPowerUpText").GetComponent<TextMesh>();
     FeedBackPowerUp.gameObject.SetActive(false);
 
-    IsFading = false;
+    FeedBackPowerUpTime = GameObject.Find("FeedBackPowerUpTimeText").GetComponent<TextMesh>();
+    FeedBackPowerUpTime.gameObject.SetActive(false);
+
+    IsFadingPoints = false;
+    IsFadingSpeed = false;
+    IsFadingPowerUp = false;
 }
 	
 	// Update is called once per frame
 	void Update ()
   {
-    UpdateScoreText();
-    ScoreActivityRoad();
-    Fading();
+    if (!AudioManager.GetInstance.GetIsPaused())
+    {
+      UpdateScoreText();
+      ScoreActivityRoad();
+      PowerUpTime();
+
+      Fading(FeedBackPoints, IsFadingPoints);
+      Fading(FeedBackPowerUp, IsFadingPowerUp);
+      Fading(FeedBackSpeed, IsFadingSpeed);
+    }
   }
 
   void UpdateScoreText()
@@ -53,63 +61,50 @@ public class AudioScore : MonoBehaviour {
     {
       AudioManager.GetInstance.SetHasCollideWithObstacle(true);
       AudioManager.GetInstance.SubstractScore(300);
-      ActiveFeedBackText(FeedBack.kFeedBack_Points, "-300");
+      ActiveFeedBackText(FeedBackPoints, "-300");
 
-      if (AudioManager.GetInstance.GetObjectsVelocity() > AudioManager.GetInstance.GetMinObjectsVelocity())
-        ActiveFeedBackText(FeedBack.kFeedBack_Speed, "-Speed");
+      if (AudioManager.GetInstance.GetObjectsVelocity() > AudioManager.GetInstance.GetMinObjectsVelocity() )
+      {
+        ActiveFeedBackText(FeedBackSpeed, "-Speed");
+        IsFadingSpeed = true;
+      }
 
-      IsFading = true;
+      IsFadingPoints = true;
     }
     else if (other.gameObject.tag == "Points")
     {
       AudioManager.GetInstance.AddScore(500);
-      ActiveFeedBackText(FeedBack.kFeedBack_Points, "+500");
+      ActiveFeedBackText(FeedBackPoints, "+500");
 
       if (AudioManager.GetInstance.GetObjectsVelocity() < AudioManager.GetInstance.GetMaxObjectsVelocity())
-        ActiveFeedBackText(FeedBack.kFeedBack_Speed, "+Speed");
+      {
+        ActiveFeedBackText(FeedBackSpeed, "+Speed");
+        IsFadingSpeed = true;
+      }
 
-      IsFading = true;
+      IsFadingPoints = true;
     }
     else if (other.gameObject.tag == "Power Up")
     {
       AudioManager.GetInstance.AddScore(150);
-      ActiveFeedBackText(FeedBack.kFeedBack_Points, "+150");
+      ActiveFeedBackText(FeedBackPoints, "+150");
 
       if (!AudioManager.GetInstance.GetGotPowerUp())
       {
-        ActiveFeedBackText(FeedBack.kFeedBack_PowerUp, "+PowerUp");
+        ActiveFeedBackText(FeedBackPowerUp, "+PowerUp");
         AudioManager.GetInstance.SetGotPowerUp(true);
+        IsFadingPowerUp = true;
       }
 
-      IsFading = true;
+      IsFadingPoints = true;
     }
   }
 
-  void ActiveFeedBackText(FeedBack fb, string text)
+  void ActiveFeedBackText(TextMesh text, string name)
   {
-    switch (fb)
-    {
-      case FeedBack.kFeedBack_Points:
-        FeedBackPoints.text = text;
-        FeedBackPoints.color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-        FeedBackPoints.gameObject.SetActive(true);
-        break;
-
-      case FeedBack.kFeedBack_Speed:
-        FeedBackSpeed.text = text;
-        FeedBackSpeed.color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-        FeedBackSpeed.gameObject.SetActive(true);
-        break;
-
-      case FeedBack.kFeedBack_PowerUp:
-        FeedBackPowerUp.text = text;
-        FeedBackPowerUp.color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-        FeedBackPowerUp.gameObject.SetActive(true);
-        break;
-
-      default:
-        break;
-    }
+    text.text = name;
+    text.color = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+    text.gameObject.SetActive(true);
   }
 
   void ScoreActivityRoad()
@@ -130,24 +125,34 @@ public class AudioScore : MonoBehaviour {
       AudioManager.GetInstance.AddScore(5);
   }
 
-  void Fading()
+  void PowerUpTime()
   {
-    if (IsFading)
+    if (AudioManager.GetInstance.GetIsActivePowerUp())
     {
-      if (FeedBackPoints.color.a <= 0.0f && FeedBackSpeed.color.a <= 0)
+      FeedBackPowerUpTime.gameObject.SetActive(true);
+      FeedBackPowerUpTime.text = ((int)AudioManager.GetInstance.GetPowerUpTime()).ToString();
+    }
+    else
+    {
+      if (FeedBackPowerUpTime.gameObject.activeSelf)
+        FeedBackPowerUpTime.gameObject.SetActive(false);
+    }
+  }
+
+  void Fading(TextMesh text, bool fade)
+  {
+    if (fade)
+    {
+      if (text.color.a <= 0.0f)
       {
-        FeedBackPoints.gameObject.SetActive(false);
-        FeedBackSpeed.gameObject.SetActive(false);
-        FeedBackPowerUp.gameObject.SetActive(false);
-        IsFading = true;
+        text.gameObject.SetActive(false);
+        fade = true;
       }
       else
       {
-        float alpha = FeedBackPoints.color.a;
+        float alpha = text.color.a;
         alpha -= 0.01f;
-        FeedBackPoints.color = new Vector4(1.0f, 1.0f, 1.0f, alpha);
-        FeedBackSpeed.color = new Vector4(1.0f, 1.0f, 1.0f, alpha);
-        FeedBackPowerUp.color = new Vector4(1.0f, 1.0f, 1.0f, alpha);
+        text.color = new Vector4(1.0f, 1.0f, 1.0f, alpha);
       }
     }
   }

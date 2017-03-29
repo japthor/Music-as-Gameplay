@@ -9,6 +9,7 @@ public class MainMenuManager : MonoBehaviour {
   public Transform CreditsMenu;
   public Transform OptionsMenu;
   public Transform PlayMenu;
+  public Transform InstructionsMenu;
 
   public Slider VolumeSlider;
 
@@ -139,6 +140,24 @@ public class MainMenuManager : MonoBehaviour {
     else
       InfectiusMusic.Stop();
 
+  }
+
+  public void BackFromInstructionMenu()
+  {
+    if (InstructionsMenu.gameObject.activeInHierarchy)
+    {
+      InitialMenu.gameObject.SetActive(true);
+      InstructionsMenu.gameObject.SetActive(false);
+    }
+  }
+
+  public void ActivateInstructionsMenu()
+  {
+    if (InitialMenu.gameObject.activeInHierarchy)
+    {
+      InitialMenu.gameObject.SetActive(false);
+      InstructionsMenu.gameObject.SetActive(true);
+    }
   }
 
 }

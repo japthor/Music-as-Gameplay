@@ -34,6 +34,7 @@ public class AudioManager : MonoBehaviour{
 
   private bool GotPowerUp;
   private bool IsActivePowerUp;
+  private float PowerUpTime;
 
   public static AudioManager GetInstance
   {
@@ -93,6 +94,7 @@ public class AudioManager : MonoBehaviour{
     IsGameFinished = false;
     GotPowerUp = false;
     IsActivePowerUp = false;
+    PowerUpTime = 4.0f;
   }
 
   void Update()
@@ -373,6 +375,16 @@ public class AudioManager : MonoBehaviour{
     return GotPowerUp;
   }
 
+  public void SetPowerUpTime(float result)
+  {
+    PowerUpTime = result;
+  }
+
+  public float GetPowerUpTime()
+  {
+    return PowerUpTime;
+  }
+
   public void ResetVariables()
   {
     for (int i = 0; i < 16; i++)
@@ -402,6 +414,7 @@ public class AudioManager : MonoBehaviour{
     IsGameFinished = false;
     GotPowerUp = false;
     IsActivePowerUp = false;
+    PowerUpTime = 4.0f;
 
     //Volume = 1.0f;
   }

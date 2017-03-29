@@ -26,35 +26,44 @@ public class AudioPlayer : MonoBehaviour {
   {
     if (!AudioManager.GetInstance.GetIsPaused())
     {
-      Movement();
+      Inputs();
       Move();
     }
   }
 
-  void Movement()
+  void Inputs()
   {
     if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-    {
-      if(Position > 0 && !IsMoving)
-      {
-        IsMoving = true;
-        IsMovingLeft = true;
-        Position--;
-        AudioManager.GetInstance.SetPlayerPosition(Position);
-        ActualPosition = transform.localPosition;
-      }
-    }
+      LeftMovement();
 
-    if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+    else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+      RightMovement();
+
+    if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+      UsePowerUp();
+  }
+
+  void LeftMovement()
+  {
+    if(Position > 0 && !IsMoving)
     {
-      if(Position < 15 && !IsMoving)
-      {
-        IsMoving = true;
-        IsMovingLeft = false;
-        Position++;
-        AudioManager.GetInstance.SetPlayerPosition(Position);
-        ActualPosition = transform.localPosition;
-      }
+      IsMoving = true;
+      IsMovingLeft = true;
+      Position--;
+      AudioManager.GetInstance.SetPlayerPosition(Position);
+      ActualPosition = transform.localPosition;
+    }
+  }
+
+  void RightMovement()
+  {
+    if (Position < 15 && !IsMoving)
+    {
+      IsMoving = true;
+      IsMovingLeft = false;
+      Position++;
+      AudioManager.GetInstance.SetPlayerPosition(Position);
+      ActualPosition = transform.localPosition;
     }
   }
 
@@ -82,6 +91,16 @@ public class AudioPlayer : MonoBehaviour {
         else
           transform.localPosition = Vector3.Lerp(transform.localPosition, new Vector3(ActualPosition.x + 2.01f, ActualPosition.y, ActualPosition.z), 0.45f);
       }
+    }
+  }
+
+  void UsePowerUp()
+  {
+    if (AudioManager.GetInstance.GetGotPowerUp())
+    {
+      AudioManager.GetInstance.SetPowerUpTime(4.0f);
+      AudioManager.GetInstance.SetIsActivePowerUp(true);
+      AudioManager.GetInstance.SetGotPowerUp(false);
     }
   }
 

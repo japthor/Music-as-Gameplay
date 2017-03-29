@@ -70,9 +70,9 @@
     <Compile Include="Assets\C#\Game\AudioComposition.cs" />
     <Compile Include="Assets\C#\Game\AudioManager.cs" />
     <Compile Include="Assets\C#\Game\AudioMultiplierText.cs" />
+    <Compile Include="Assets\C#\Game\AudioMusic.cs" />
     <Compile Include="Assets\C#\Game\AudioObjectsBehaviour.cs" />
     <Compile Include="Assets\C#\Game\AudioParticles.cs" />
-    <Compile Include="Assets\C#\Game\AudioPlayMusic.cs" />
     <Compile Include="Assets\C#\Game\AudioPlayer.cs" />
     <Compile Include="Assets\C#\Game\AudioRoad.cs" />
     <Compile Include="Assets\C#\Game\AudioScore.cs" />

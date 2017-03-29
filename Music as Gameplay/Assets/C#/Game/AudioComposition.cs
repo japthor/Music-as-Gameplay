@@ -49,7 +49,7 @@ public class AudioComposition : MonoBehaviour {
         count++;
       }
 
-      AudioManager.GetInstance.SetMusicFrequencyBand(i, (average / count) * 10);
+      AudioManager.GetInstance.SetMusicFrequencyBand(i, (average / count) * 5);
     }
 
   }

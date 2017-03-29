@@ -1,19 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AudioPlayMusic : MonoBehaviour {
+public class AudioMusic : MonoBehaviour {
+
+  private AudioSource AudioSource;
 
   private float SecondsToStartMusic;
-  private float SecondsToFinishGame;
-  private AudioSource AudioSource;
+  private float SecondsToFinishMusic;
   private bool Play;
 
   // Use this for initialization
   void Start ()
   {
-    SecondsToStartMusic = 3.0f;
-    SecondsToFinishGame = 6.0f;
     AudioSource = GetComponent<AudioSource>();
+
+    SecondsToStartMusic = 3.0f;
+    SecondsToFinishMusic = SecondsToStartMusic * 2.0f;
     Play = false;
 
     switch (AudioManager.GetInstance.GetSongs())
@@ -40,7 +42,8 @@ public class AudioPlayMusic : MonoBehaviour {
     if (!AudioManager.GetInstance.GetIsPaused())
     {
       PlayMusic();
-      EndGame();
+      ActivePowerUp();
+      EndMusic();
     }
   }
 
@@ -58,14 +61,37 @@ public class AudioPlayMusic : MonoBehaviour {
       SecondsToStartMusic -= Time.deltaTime;
   }
 
-  void EndGame()
+  void EndMusic()
   {
     if (!AudioSource.isPlaying && Play)
     {
-      if (SecondsToFinishGame <= 0.0f)
+      if (SecondsToFinishMusic <= 0.0f)
         AudioManager.GetInstance.SetIsGameFinished(true);
       else
-        SecondsToFinishGame -= Time.deltaTime;
+        SecondsToFinishMusic -= Time.deltaTime;
+    }
+  }
+
+  void ActivePowerUp()
+  {
+    if (AudioManager.GetInstance.GetIsActivePowerUp())
+    {
+      if (AudioManager.GetInstance.GetPowerUpTime() <= 0.0f)
+      {
+        Time.timeScale = 1.0f;
+        AudioManager.GetInstance.SetIsActivePowerUp(false);
+      }
+      else
+      {
+        AudioSource.pitch = 0.5f;
+        Time.timeScale = 0.5f;
+        AudioManager.GetInstance.SetPowerUpTime(AudioManager.GetInstance.GetPowerUpTime() - Time.deltaTime);
+      }
+    }
+    else
+    {
+      if(AudioSource.pitch != 1.0f)
+        AudioSource.pitch = 1.0f;
     }
   }
 }
