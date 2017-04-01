@@ -6,10 +6,7 @@ public class AudioScore : MonoBehaviour {
 
   public Text ScoreText;
 
-  private TextMesh FeedBackPoints;
-  private TextMesh FeedBackSpeed;
-  private TextMesh FeedBackPowerUp;
-  private TextMesh FeedBackPowerUpTime;
+  public TextMesh[] FeedBack = new TextMesh[4];
 
   private bool IsFadingPoints;
   private bool IsFadingSpeed;
@@ -18,17 +15,10 @@ public class AudioScore : MonoBehaviour {
   // Use this for initialization
   void Start ()
   {
-    FeedBackPoints = GameObject.Find("FeedBackPointsText").GetComponent<TextMesh>();
-    FeedBackPoints.gameObject.SetActive(false);
-
-    FeedBackSpeed = GameObject.Find("FeedBackSpeedText").GetComponent<TextMesh>();
-    FeedBackSpeed.gameObject.SetActive(false);
-
-    FeedBackPowerUp = GameObject.Find("FeedBackPowerUpText").GetComponent<TextMesh>();
-    FeedBackPowerUp.gameObject.SetActive(false);
-
-    FeedBackPowerUpTime = GameObject.Find("FeedBackPowerUpTimeText").GetComponent<TextMesh>();
-    FeedBackPowerUpTime.gameObject.SetActive(false);
+    for(int i = 0; i < FeedBack.Length; i++)
+    {
+      FeedBack[i].gameObject.SetActive(false);
+    }
 
     IsFadingPoints = false;
     IsFadingSpeed = false;
@@ -38,34 +28,33 @@ public class AudioScore : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
   {
-    if (!AudioManager.GetInstance.GetIsPaused())
+    if (!AudioManager.GetInstance.GetIsPaused)
     {
       UpdateScoreText();
       ScoreActivityRoad();
       PowerUpTime();
 
-      Fading(FeedBackPoints, IsFadingPoints);
-      Fading(FeedBackPowerUp, IsFadingPowerUp);
-      Fading(FeedBackSpeed, IsFadingSpeed);
+      Fading(FeedBack[0], IsFadingPoints);
+      Fading(FeedBack[2], IsFadingPowerUp);
+      Fading(FeedBack[1], IsFadingSpeed);
     }
   }
 
   void UpdateScoreText()
   {
-    ScoreText.text = AudioManager.GetInstance.GetScore().ToString();
+    ScoreText.text = AudioManager.GetInstance.GetScore.ToString();
   }
 
   void OnTriggerEnter(Collider other)
   {
     if (other.gameObject.tag == "Obstacle")
     {
-      AudioManager.GetInstance.SetHasCollideWithObstacle(true);
-      AudioManager.GetInstance.SubstractScore(300);
-      ActiveFeedBackText(FeedBackPoints, "-300");
+      AudioManager.GetInstance.GetHasCollideWithObstacle = true;
+      SubstracPoints(300);
 
-      if (AudioManager.GetInstance.GetObjectsVelocity() > AudioManager.GetInstance.GetMinObjectsVelocity() )
+      if (AudioManager.GetInstance.GetObjectsVelocity > AudioManager.GetInstance.GetMinObjectsVelocity)
       {
-        ActiveFeedBackText(FeedBackSpeed, "-Speed");
+        ActiveFeedBackText(FeedBack[1], "-Speed");
         IsFadingSpeed = true;
       }
 
@@ -73,12 +62,11 @@ public class AudioScore : MonoBehaviour {
     }
     else if (other.gameObject.tag == "Points")
     {
-      AudioManager.GetInstance.AddScore(500);
-      ActiveFeedBackText(FeedBackPoints, "+500");
+      AddPoints(500);
 
-      if (AudioManager.GetInstance.GetObjectsVelocity() < AudioManager.GetInstance.GetMaxObjectsVelocity())
+      if (AudioManager.GetInstance.GetObjectsVelocity < AudioManager.GetInstance.GetMaxObjectsVelocity)
       {
-        ActiveFeedBackText(FeedBackSpeed, "+Speed");
+        ActiveFeedBackText(FeedBack[1], "+Speed");
         IsFadingSpeed = true;
       }
 
@@ -86,18 +74,29 @@ public class AudioScore : MonoBehaviour {
     }
     else if (other.gameObject.tag == "Power Up")
     {
-      AudioManager.GetInstance.AddScore(150);
-      ActiveFeedBackText(FeedBackPoints, "+150");
+      AddPoints(150);
 
-      if (!AudioManager.GetInstance.GetGotPowerUp())
+      if (!AudioManager.GetInstance.GetGotPowerUp)
       {
-        ActiveFeedBackText(FeedBackPowerUp, "+PowerUp");
-        AudioManager.GetInstance.SetGotPowerUp(true);
+        ActiveFeedBackText(FeedBack[2], "+PowerUp");
+        AudioManager.GetInstance.GetGotPowerUp = true;
         IsFadingPowerUp = true;
       }
 
       IsFadingPoints = true;
     }
+  }
+
+  void AddPoints(int score)
+  {
+    AudioManager.GetInstance.AddScore(score);
+    ActiveFeedBackText(FeedBack[0], "+" + score.ToString());
+  }
+
+  void SubstracPoints(int score)
+  {
+    AudioManager.GetInstance.SubstractScore(300);
+    ActiveFeedBackText(FeedBack[0], "-" + score.ToString());
   }
 
   void ActiveFeedBackText(TextMesh text, string name)
@@ -109,33 +108,33 @@ public class AudioScore : MonoBehaviour {
 
   void ScoreActivityRoad()
   {
-    if (AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition()) >= 1 && AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition()) < 5)
+    if (AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition) >= 1 && AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition) < 5)
       AudioManager.GetInstance.AddScore(1);
 
-    else if (AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition()) >= 5 && AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition()) < 10)
+    else if (AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition) >= 5 && AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition) < 10)
       AudioManager.GetInstance.AddScore(2);
 
-    else if (AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition()) >= 10 && AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition()) < 15)
+    else if (AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition) >= 10 && AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition) < 15)
       AudioManager.GetInstance.AddScore(3);
 
-    else if (AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition()) >= 15 && AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition()) < 20)
+    else if (AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition) >= 15 && AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition) < 20)
       AudioManager.GetInstance.AddScore(4);
 
-    else if (AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition()) >= 20 && AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition()) < 25)
+    else if (AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition) >= 20 && AudioManager.GetInstance.GetActivity(AudioManager.GetInstance.GetPlayerPosition) < 25)
       AudioManager.GetInstance.AddScore(5);
   }
 
   void PowerUpTime()
   {
-    if (AudioManager.GetInstance.GetIsActivePowerUp())
+    if (AudioManager.GetInstance.GetIsActivePowerUp)
     {
-      FeedBackPowerUpTime.gameObject.SetActive(true);
-      FeedBackPowerUpTime.text = ((int)AudioManager.GetInstance.GetPowerUpTime()).ToString();
+      FeedBack[3].gameObject.SetActive(true);
+      FeedBack[3].text = ((int)AudioManager.GetInstance.GetPowerUpTime).ToString();
     }
     else
     {
-      if (FeedBackPowerUpTime.gameObject.activeSelf)
-        FeedBackPowerUpTime.gameObject.SetActive(false);
+      if (FeedBack[3].gameObject.activeSelf)
+        FeedBack[3].gameObject.SetActive(false);
     }
   }
 

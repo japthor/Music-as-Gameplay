@@ -18,7 +18,7 @@ public class AudioComposition : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
   {
-    if (!AudioManager.GetInstance.GetIsPaused())
+    if (!AudioManager.GetInstance.GetIsPaused)
     {
       GetSpectrumData();
       IntegrateFrequency();

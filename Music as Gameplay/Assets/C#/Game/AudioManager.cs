@@ -97,11 +97,6 @@ public class AudioManager : MonoBehaviour{
     PowerUpTime = 4.0f;
   }
 
-  void Update()
-  {
-
-  }
-
   public void SetMusicFrequencyBand(int band, float frequency)
   {
     MusicFrequencyBand[band] = frequency;
@@ -206,24 +201,16 @@ public class AudioManager : MonoBehaviour{
     }
   }
 
-  public void SetHasCollideWithObstacle(bool result)
+  public bool GetHasCollideWithObstacle
   {
-    HasCollideWithObstacle = result;
+    get { return HasCollideWithObstacle; }
+    set { HasCollideWithObstacle = value; }
   }
 
-  public bool GetHasCollideWithObstacle()
+  public int GetPlayerPosition
   {
-    return HasCollideWithObstacle;
-  }
-
-  public void SetPlayerPosition(int result)
-  {
-    PlayerPosition = result;
-  }
-
-  public int GetPlayerPosition()
-  {
-    return PlayerPosition;
+    get { return PlayerPosition; }
+    set { PlayerPosition = value; }
   }
 
   public void DecreaseObjectsVelocity(float result)
@@ -242,29 +229,22 @@ public class AudioManager : MonoBehaviour{
       ObjectsVelocity += result;
   }
 
-  public float GetObjectsVelocity()
+  public float GetObjectsVelocity
   {
-    return ObjectsVelocity;
+    get { return ObjectsVelocity; }
+    set { ObjectsVelocity = value; }
   }
 
-  public void SetMinObjectsVelocity(float result)
+  public float GetMinObjectsVelocity
   {
-    MinObjectsVelocity = result;
+    get { return MinObjectsVelocity; }
+    set { MinObjectsVelocity = value; }
   }
 
-  public float GetMinObjectsVelocity()
+  public float GetMaxObjectsVelocity
   {
-    return MinObjectsVelocity;
-  }
-
-  public void SetMaxObjectsVelocity(float result)
-  {
-    MaxObjectsVelocity = result;
-  }
-
-  public float GetMaxObjectsVelocity()
-  {
-    return MaxObjectsVelocity;
+    get { return MaxObjectsVelocity; }
+    set { MaxObjectsVelocity = value; }
   }
 
   public void AddScore(int result)
@@ -280,9 +260,10 @@ public class AudioManager : MonoBehaviour{
       Score -= result;
   }
 
-  public int GetScore()
+  public int GetScore
   {
-    return Score;
+    get { return Score; }
+    set { Score = value; }
   }
 
   public void SetActivity(int band, int result)
@@ -315,74 +296,46 @@ public class AudioManager : MonoBehaviour{
     return ActivateParticles[band];
   }
 
-  public void SetIsPaused(bool result)
+  public bool GetIsPaused
   {
-    IsPaused = result;
+    get { return IsPaused; }
+    set { IsPaused = value; }
   }
 
-  public bool GetIsPaused()
+  public float GetVolume
   {
-    return IsPaused;
+    get { return Volume; }
+    set { Volume = value; }
   }
 
-  public void SetVolume(float result)
+  public int GetSongs
   {
-    Volume = result;
+    get { return Songs; }
+    set { Songs = value; }
   }
 
-  public float GetVolume()
+  public bool GetIsGameFinished
   {
-    return Volume;
+    get { return IsGameFinished; }
+    set { IsGameFinished = value; }
   }
 
-  public void SetSongs(int result)
+  public bool GetIsActivePowerUp
   {
-    Songs = result;
+    get { return IsActivePowerUp; }
+    set { IsActivePowerUp = value; }
   }
 
-  public int GetSongs()
+  public bool GetGotPowerUp
   {
-    return Songs;
+    get { return GotPowerUp; }
+    set { GotPowerUp = value; }
   }
 
-  public void SetIsGameFinished(bool result)
+  public float GetPowerUpTime
   {
-    IsGameFinished = result;
-  }
-
-  public bool GetIsGameFinished()
-  {
-    return IsGameFinished;
-  }
-
-  public void SetIsActivePowerUp(bool result)
-  {
-    IsActivePowerUp = result;
-  }
-
-  public bool GetIsActivePowerUp()
-  {
-    return IsActivePowerUp;
-  }
-
-  public void SetGotPowerUp(bool result)
-  {
-    GotPowerUp = result;
-  }
-
-  public bool GetGotPowerUp()
-  {
-    return GotPowerUp;
-  }
-
-  public void SetPowerUpTime(float result)
-  {
-    PowerUpTime = result;
-  }
-
-  public float GetPowerUpTime()
-  {
-    return PowerUpTime;
+    get { return PowerUpTime; }
+    set { PowerUpTime = value; }
   }
 
   public void ResetVariables()
@@ -415,7 +368,5 @@ public class AudioManager : MonoBehaviour{
     GotPowerUp = false;
     IsActivePowerUp = false;
     PowerUpTime = 4.0f;
-
-    //Volume = 1.0f;
   }
 }

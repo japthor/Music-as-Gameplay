@@ -27,7 +27,7 @@ public class AudioSpawnObstacle : MonoBehaviour {
 
 	void Update ()
   {
-    if (!AudioManager.GetInstance.GetIsPaused())
+    if (!AudioManager.GetInstance.GetIsPaused)
     {
       AudioManager.GetInstance.MusicLinearMapping(Band);
       Timer();

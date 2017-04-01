@@ -17,10 +17,9 @@ public class AudioCamera : MonoBehaviour {
     Position = transform.localPosition;
   }
 
-  // Update is called once per frame
   void Update ()
   {
-    if (!AudioManager.GetInstance.GetIsPaused())
+    if (!AudioManager.GetInstance.GetIsPaused)
     {
       CheckCollision();
       Shake();
@@ -29,10 +28,10 @@ public class AudioCamera : MonoBehaviour {
 
   void CheckCollision()
   {
-    if (AudioManager.GetInstance.GetHasCollideWithObstacle())
+    if (AudioManager.GetInstance.GetHasCollideWithObstacle)
     {
       Duration = 0.5f;
-      AudioManager.GetInstance.SetHasCollideWithObstacle(false);
+      AudioManager.GetInstance.GetHasCollideWithObstacle = false;
     }
   }
 

@@ -15,7 +15,7 @@ public class AudioRoad : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
   {
-    if (!AudioManager.GetInstance.GetIsPaused())
+    if (!AudioManager.GetInstance.GetIsPaused)
     {
       AudioManager.GetInstance.AlteredLinearMapping(Band);
       Brightness(0.1f, 0.8f, 0.2f, 0.8f);

@@ -5,21 +5,11 @@ using System.Collections;
 
 public class MainMenuManager : MonoBehaviour {
 
-  public Transform InitialMenu;
-  public Transform CreditsMenu;
-  public Transform OptionsMenu;
-  public Transform PlayMenu;
-  public Transform InstructionsMenu;
-
+  public Transform[] Menus = new Transform[5];
+  public Toggle[] Toggles = new Toggle[3];
+  public AudioSource[] Music = new AudioSource[3];
   public Slider VolumeSlider;
 
-  public Toggle FadeToggle;
-  public Toggle ShootingStarsToggle;
-
-  public AudioSource FadeMusic;
-  public AudioSource InfectiusMusic;
-
-  // Use this for initialization
   void Start ()
   {
     GameObject Manager = GameObject.Find("AudioManager");
@@ -27,22 +17,14 @@ public class MainMenuManager : MonoBehaviour {
     if (Manager == null)
       VolumeSlider.value = 1.0f;
     else
-      VolumeSlider.value = AudioManager.GetInstance.GetVolume();
+      VolumeSlider.value = AudioManager.GetInstance.GetVolume;
 
   }
-	
-	// Update is called once per frame
-	void Update ()
-  {
-	
-	}
 
   public void Play(int scene)
   {
-    if (FadeToggle.isOn || ShootingStarsToggle.isOn)
-    {
+    if (Toggles[0].isOn || Toggles[1].isOn | Toggles[2].isOn)
       SceneManager.LoadScene(scene);
-    }
   }
   
   public void Exit()
@@ -50,114 +32,111 @@ public class MainMenuManager : MonoBehaviour {
     Application.Quit();
   }
 
-  public void BackFromCreditsMenu()
+  public void Volume()
   {
-    if (CreditsMenu.gameObject.activeInHierarchy)
-    {
-      InitialMenu.gameObject.SetActive(true);
-      CreditsMenu.gameObject.SetActive(false);
-    }
-  }
-  
-  public void AviteCreditsMenu()
-  {
-    if (InitialMenu.gameObject.activeInHierarchy)
-    {
-      InitialMenu.gameObject.SetActive(false);
-      CreditsMenu.gameObject.SetActive(true);
-    }
+    AudioManager.GetInstance.GetVolume = VolumeSlider.value;
+
+    for(int i = 0; i < Music.Length; i++)
+      Music[i].volume = VolumeSlider.value;
   }
 
   public void BackFromOptionsMenu()
   {
-    if (OptionsMenu.gameObject.activeInHierarchy)
-    {
-      InitialMenu.gameObject.SetActive(true);
-      OptionsMenu.gameObject.SetActive(false);
-    }
+    MoveMenu(Menus[3], Menus[0]);
   }
 
   public void ActivateOptionsMenu()
   {
-    if (InitialMenu.gameObject.activeInHierarchy)
-    {
-      InitialMenu.gameObject.SetActive(false);
-      OptionsMenu.gameObject.SetActive(true);
-    }
+    MoveMenu(Menus[0], Menus[3]);
   }
 
-  public void Volume()
+  public void AviteCreditsMenu()
   {
-    AudioManager.GetInstance.SetVolume(VolumeSlider.value);
-    InfectiusMusic.volume = VolumeSlider.value;
-    FadeMusic.volume = VolumeSlider.value;
+    MoveMenu(Menus[0], Menus[2]);
   }
 
-  public void BackFromPlayMenu()
+  public void BackFromCreditsMenu()
   {
-    if (PlayMenu.gameObject.activeInHierarchy)
-    {
-      InitialMenu.gameObject.SetActive(true);
-      PlayMenu.gameObject.SetActive(false);
-    }
+    MoveMenu(Menus[2], Menus[0]);
   }
 
   public void ActivatePlayMenu()
   {
-    if (InitialMenu.gameObject.activeInHierarchy)
-    {
-      InitialMenu.gameObject.SetActive(false);
-      PlayMenu.gameObject.SetActive(true);
-      AudioManager.GetInstance.ResetVariables();
-    }
+    MoveMenu(Menus[0], Menus[1]);
+    AudioManager.GetInstance.ResetVariables();
   }
 
-  public void FadeSongToggle()
+  public void BackFromPlayMenu()
   {
-    if (FadeToggle.isOn)
-    {
-      AudioManager.GetInstance.SetSongs(2);
-      ShootingStarsToggle.isOn = false;
-
-      FadeMusic.Play();
-      InfectiusMusic.Stop();
-    }
-    else
-      FadeMusic.Stop();
-
-  }
-
-  public void ShootingStarsSongToggle()
-  {
-    if (ShootingStarsToggle.isOn)
-    {
-      AudioManager.GetInstance.SetSongs(1);
-      FadeToggle.isOn = false;
-
-      FadeMusic.Stop();
-      InfectiusMusic.Play();
-    }
-    else
-      InfectiusMusic.Stop();
-
-  }
-
-  public void BackFromInstructionMenu()
-  {
-    if (InstructionsMenu.gameObject.activeInHierarchy)
-    {
-      InitialMenu.gameObject.SetActive(true);
-      InstructionsMenu.gameObject.SetActive(false);
-    }
+    MoveMenu(Menus[1], Menus[0]);
   }
 
   public void ActivateInstructionsMenu()
   {
-    if (InitialMenu.gameObject.activeInHierarchy)
+    MoveMenu(Menus[0], Menus[4]);
+  }
+
+  public void BackFromInstructionMenu()
+  {
+    MoveMenu(Menus[4], Menus[0]);
+  }
+
+  void MoveMenu(Transform from, Transform to)
+  {
+    if (from.gameObject.activeInHierarchy)
     {
-      InitialMenu.gameObject.SetActive(false);
-      InstructionsMenu.gameObject.SetActive(true);
+      to.gameObject.SetActive(true);
+      from.gameObject.SetActive(false);
     }
   }
 
+
+  public void Toggle(int music)
+  {
+    switch (music)
+    {
+      case 1:
+        if (Toggles[0].isOn)
+        {
+          AudioManager.GetInstance.GetSongs = 1;
+          PlayMusic(new int[] {0, 1, 2}, new int[] {1, 2});
+        }
+        else
+          Music[0].Stop();
+        break;
+
+      case 2:
+        if (Toggles[1].isOn)
+        {
+          AudioManager.GetInstance.GetSongs = 2;
+          PlayMusic(new int[] { 1, 0, 2 }, new int[] {0, 2});
+        }
+        else
+          Music[1].Stop();
+        break;
+
+      case 3:
+        if (Toggles[2].isOn)
+        {
+          AudioManager.GetInstance.GetSongs = 3;
+          PlayMusic(new int[] {2, 0, 1}, new int[] {0, 1});
+        }
+        else
+          Music[2].Stop();
+        break;
+
+      default:
+        break;       
+    }
+  }
+
+  void PlayMusic(int[] music, int[] toggle)
+  {
+    Toggles[toggle[0]].isOn = false;
+    Toggles[toggle[1]].isOn = false;
+
+    Music[music[0]].Play();
+    Music[music[1]].Stop();
+    Music[music[2]].Stop();
+  }
 }

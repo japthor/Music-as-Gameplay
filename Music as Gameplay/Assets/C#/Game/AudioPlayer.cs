@@ -24,7 +24,7 @@ public class AudioPlayer : MonoBehaviour {
 
 	void Update ()
   {
-    if (!AudioManager.GetInstance.GetIsPaused())
+    if (!AudioManager.GetInstance.GetIsPaused)
     {
       Inputs();
       Move();
@@ -50,7 +50,7 @@ public class AudioPlayer : MonoBehaviour {
       IsMoving = true;
       IsMovingLeft = true;
       Position--;
-      AudioManager.GetInstance.SetPlayerPosition(Position);
+      AudioManager.GetInstance.GetPlayerPosition = Position;
       ActualPosition = transform.localPosition;
     }
   }
@@ -62,7 +62,7 @@ public class AudioPlayer : MonoBehaviour {
       IsMoving = true;
       IsMovingLeft = false;
       Position++;
-      AudioManager.GetInstance.SetPlayerPosition(Position);
+      AudioManager.GetInstance.GetPlayerPosition = Position;
       ActualPosition = transform.localPosition;
     }
   }
@@ -96,11 +96,11 @@ public class AudioPlayer : MonoBehaviour {
 
   void UsePowerUp()
   {
-    if (AudioManager.GetInstance.GetGotPowerUp())
+    if (AudioManager.GetInstance.GetGotPowerUp)
     {
-      AudioManager.GetInstance.SetPowerUpTime(4.0f);
-      AudioManager.GetInstance.SetIsActivePowerUp(true);
-      AudioManager.GetInstance.SetGotPowerUp(false);
+      AudioManager.GetInstance.GetPowerUpTime = 4.0f;
+      AudioManager.GetInstance.GetIsActivePowerUp = true;
+      AudioManager.GetInstance.GetGotPowerUp = false;
     }
   }
 

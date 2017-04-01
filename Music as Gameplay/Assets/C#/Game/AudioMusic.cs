@@ -18,7 +18,7 @@ public class AudioMusic : MonoBehaviour {
     SecondsToFinishMusic = SecondsToStartMusic * 2.0f;
     Play = false;
 
-    switch (AudioManager.GetInstance.GetSongs())
+    switch (AudioManager.GetInstance.GetSongs)
     {
       case 1:
         AudioSource.clip = Resources.Load("Tobu - Infectious") as AudioClip;
@@ -28,18 +28,22 @@ public class AudioMusic : MonoBehaviour {
         AudioSource.clip = Resources.Load("Alan Walker - Fade") as AudioClip;
         break;
 
+      case 3:
+        AudioSource.clip = Resources.Load("Tobu - Seven") as AudioClip;
+        break;
+
       default:
         break;
     }
 
     if (gameObject.tag == "BackGroundMusic")
-      AudioSource.volume = AudioManager.GetInstance.GetVolume();
+      AudioSource.volume = AudioManager.GetInstance.GetVolume;
   }
 	
 	// Update is called once per frame
 	void Update ()
   {
-    if (!AudioManager.GetInstance.GetIsPaused())
+    if (!AudioManager.GetInstance.GetIsPaused)
     {
       PlayMusic();
       ActivePowerUp();
@@ -66,7 +70,7 @@ public class AudioMusic : MonoBehaviour {
     if (!AudioSource.isPlaying && Play)
     {
       if (SecondsToFinishMusic <= 0.0f)
-        AudioManager.GetInstance.SetIsGameFinished(true);
+        AudioManager.GetInstance.GetIsGameFinished = true;
       else
         SecondsToFinishMusic -= Time.deltaTime;
     }
@@ -74,18 +78,18 @@ public class AudioMusic : MonoBehaviour {
 
   void ActivePowerUp()
   {
-    if (AudioManager.GetInstance.GetIsActivePowerUp())
+    if (AudioManager.GetInstance.GetIsActivePowerUp)
     {
-      if (AudioManager.GetInstance.GetPowerUpTime() <= 0.0f)
+      if (AudioManager.GetInstance.GetPowerUpTime <= 0.0f)
       {
         Time.timeScale = 1.0f;
-        AudioManager.GetInstance.SetIsActivePowerUp(false);
+        AudioManager.GetInstance.GetIsActivePowerUp = false;
       }
       else
       {
         AudioSource.pitch = 0.5f;
         Time.timeScale = 0.5f;
-        AudioManager.GetInstance.SetPowerUpTime(AudioManager.GetInstance.GetPowerUpTime() - Time.deltaTime);
+        AudioManager.GetInstance.GetPowerUpTime = AudioManager.GetInstance.GetPowerUpTime - Time.deltaTime;
       }
     }
     else

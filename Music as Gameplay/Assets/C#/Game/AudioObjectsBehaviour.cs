@@ -18,7 +18,7 @@ public class AudioObjectsBehaviour : MonoBehaviour {
 
   void Update()
   {
-    if (!AudioManager.GetInstance.GetIsPaused())
+    if (!AudioManager.GetInstance.GetIsPaused)
     {
       Movement();
       Scale();
@@ -34,9 +34,9 @@ public class AudioObjectsBehaviour : MonoBehaviour {
   void Movement()
   {
     if (IsMovingDown)
-      transform.Translate(Vector3.down * AudioManager.GetInstance.GetObjectsVelocity() * Time.deltaTime, Space.World);
+      transform.Translate(Vector3.down * AudioManager.GetInstance.GetObjectsVelocity * Time.deltaTime, Space.World);
     else
-      transform.Translate(Vector3.back * AudioManager.GetInstance.GetObjectsVelocity() * Time.deltaTime, Space.World);
+      transform.Translate(Vector3.back * AudioManager.GetInstance.GetObjectsVelocity * Time.deltaTime, Space.World);
   }
 
   void Scale()
@@ -58,7 +58,7 @@ public class AudioObjectsBehaviour : MonoBehaviour {
     {
       if(tag == "Obstacle")
       {
-        AudioManager.GetInstance.SetHasCollideWithObstacle(true);
+        AudioManager.GetInstance.GetHasCollideWithObstacle = true;
         AudioManager.GetInstance.DecreaseObjectsVelocity(0.5f);
         AudioManager.GetInstance.SetActivity(Band, -1);
         Destroy(this.gameObject);

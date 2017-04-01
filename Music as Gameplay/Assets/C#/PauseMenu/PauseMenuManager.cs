@@ -5,60 +5,30 @@ using System.Collections;
 
 public class PauseMenuManager : MonoBehaviour {
 
-  public Transform PauseMenu;
-  public Transform OptionsMenu;
-  public Transform GameOverMenu;
-  public AudioSource BackGroundMusic;
-  public AudioSource ObjectsMusic;
+  public Transform[] Menus = new Transform[3];
+  public AudioSource[] Music = new AudioSource[2];
   public Slider VolumeSlider;
   public Text FinalScore;
 
-  // Use this for initialization
+
   void Start ()
   {
-    VolumeSlider.value = AudioManager.GetInstance.GetVolume();
+    VolumeSlider.value = AudioManager.GetInstance.GetVolume;
   }
 	
-	// Update is called once per frame
+
 	void Update ()
   {
-    if (!AudioManager.GetInstance.GetIsPaused())
+    if (!AudioManager.GetInstance.GetIsPaused)
       ActivatePauseMenu();
 
-    if (AudioManager.GetInstance.GetIsGameFinished())
+    if (AudioManager.GetInstance.GetIsGameFinished)
     {
-      AudioManager.GetInstance.SetIsPaused(true);
-      GameOverMenu.gameObject.SetActive(true);
-      FinalScore.text = AudioManager.GetInstance.GetScore().ToString() + " Points";
+      AudioManager.GetInstance.GetIsPaused = true;
+      Menus[2].gameObject.SetActive(true);
+      FinalScore.text = AudioManager.GetInstance.GetScore.ToString() + " Points";
     }
 	}
-
-  void ActivatePauseMenu()
-  {
-    if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) && !AudioManager.GetInstance.GetIsGameFinished())
-    {
-      if (!PauseMenu.gameObject.activeInHierarchy)
-      {
-        PauseMenu.gameObject.SetActive(true);
-        BackGroundMusic.Pause();
-        ObjectsMusic.Pause();
-        AudioManager.GetInstance.SetIsPaused(true);
-        Time.timeScale = 0;
-      }
-    }
-  }
-
-  public void DesactivatePauseMenu()
-  {
-    if (PauseMenu.gameObject.activeInHierarchy)
-    {
-      PauseMenu.gameObject.SetActive(false);
-      BackGroundMusic.UnPause();
-      ObjectsMusic.UnPause();
-      AudioManager.GetInstance.SetIsPaused(false);
-      Time.timeScale = 1;
-    }
-  }
 
   public void GoMainMenu(int scene)
   {
@@ -66,27 +36,76 @@ public class PauseMenuManager : MonoBehaviour {
     SceneManager.LoadScene(scene);
   }
 
+  void ActivatePauseMenu()
+  {
+    if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P)) && !AudioManager.GetInstance.GetIsGameFinished)
+    {
+      if (!Menus[0].gameObject.activeInHierarchy)
+        PauseMenu(true);
+    }
+  }
+
+  public void DesactivatePauseMenu()
+  {
+    if (Menus[0].gameObject.activeInHierarchy)
+      PauseMenu(false);
+  }
+
+  void PauseMenu(bool active)
+  {
+    Menus[0].gameObject.SetActive(active);
+
+    if (active)
+    {
+      PauseMusic(active);
+      AudioManager.GetInstance.GetIsPaused = active;
+      Time.timeScale = 0;
+    }
+    else
+    {
+      PauseMusic(active);
+      AudioManager.GetInstance.GetIsPaused = active;
+      Time.timeScale = 1;
+    }
+  }
+
+  void PauseMusic(bool result)
+  {
+    if (result)
+    {
+      Music[0].Pause();
+      Music[1].Pause();
+    }
+    else
+    {
+      Music[0].UnPause();
+      Music[1].UnPause();
+    }
+  }
+
+
   public void ActivateOptionsMenu()
   {
-    if (PauseMenu.gameObject.activeInHierarchy)
-    { 
-      PauseMenu.gameObject.SetActive(false);
-      OptionsMenu.gameObject.SetActive(true);
-    }
+    MoveMenu(Menus[0], Menus[1]);
   }
 
   public void DesactivateOptionsMenu()
   {
-    if (OptionsMenu.gameObject.activeInHierarchy)
+    MoveMenu(Menus[1], Menus[0]);
+  }
+
+  void MoveMenu(Transform from, Transform to)
+  {
+    if (from.gameObject.activeInHierarchy)
     {
-      OptionsMenu.gameObject.SetActive(false);
-      PauseMenu.gameObject.SetActive(true);
+      to.gameObject.SetActive(true);
+      from.gameObject.SetActive(false);
     }
   }
 
   public void Volume()
   {
-    BackGroundMusic.volume = VolumeSlider.value;
-    AudioManager.GetInstance.SetVolume(BackGroundMusic.volume);
+    Music[0].volume = VolumeSlider.value;
+    AudioManager.GetInstance.GetVolume = Music[0].volume;
   }
 }

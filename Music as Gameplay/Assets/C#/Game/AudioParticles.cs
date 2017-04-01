@@ -16,7 +16,7 @@ public class AudioParticles : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
   {
-    if (!AudioManager.GetInstance.GetIsPaused())
+    if (!AudioManager.GetInstance.GetIsPaused)
     {
       if(Particles.tag == "Fireworks")
         ActivateFireworksParticles();
@@ -24,7 +24,7 @@ public class AudioParticles : MonoBehaviour {
         ActivateStarsParticles();
     }
 
-    if (AudioManager.GetInstance.GetIsGameFinished())
+    if (AudioManager.GetInstance.GetIsGameFinished)
       Particles.Stop();
   }
 
@@ -40,7 +40,7 @@ public class AudioParticles : MonoBehaviour {
   void ActivateFireworksParticles()
   {
 
-    if (AudioManager.GetInstance.GetObjectsVelocity() >= VelocityToStart)
+    if (AudioManager.GetInstance.GetObjectsVelocity >= VelocityToStart)
     {
       if (Particles.isStopped)
         Particles.Play();
