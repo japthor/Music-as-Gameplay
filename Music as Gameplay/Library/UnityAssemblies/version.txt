@@ -1,7 +1,7 @@
-5.4.3f1:2.8.2.0
+5.4.3f1:3.0.0.1
 StandaloneWindows
-D:/Programas/Unity - 5.4.3/Editor/Data/Managed/UnityEngine.dll
-D:/Programas/Unity - 5.4.3/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
-D:/Programas/Unity - 5.4.3/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
-D:/Programas/Unity - 5.4.3/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll
-D:/Programas/Unity - 5.4.3/Editor/Data/Managed/UnityEditor.dll
+C:/Unity/Editor/Data/Managed/UnityEngine.dll
+C:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
+C:/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
+C:/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll
+C:/Unity/Editor/Data/Managed/UnityEditor.dll
