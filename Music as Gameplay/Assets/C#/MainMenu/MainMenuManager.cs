@@ -6,8 +6,8 @@ using System.Collections;
 public class MainMenuManager : MonoBehaviour {
 
   public Transform[] Menus = new Transform[5];
-  public Toggle[] Toggles = new Toggle[3];
-  public AudioSource[] Music = new AudioSource[3];
+  public Toggle[] Toggles = new Toggle[6];
+  public AudioSource[] Music = new AudioSource[6];
   public Slider VolumeSlider;
 
   void Start ()
@@ -23,7 +23,8 @@ public class MainMenuManager : MonoBehaviour {
 
   public void Play(int scene)
   {
-    if (Toggles[0].isOn || Toggles[1].isOn | Toggles[2].isOn)
+    if (Toggles[0].isOn || Toggles[1].isOn || Toggles[2].isOn || Toggles[3].isOn ||
+        Toggles[4].isOn || Toggles[5].isOn)
       SceneManager.LoadScene(scene);
   }
   
@@ -99,7 +100,7 @@ public class MainMenuManager : MonoBehaviour {
         if (Toggles[0].isOn)
         {
           AudioManager.GetInstance.GetSongs = 1;
-          PlayMusic(new int[] {0, 1, 2}, new int[] {1, 2});
+          PlayMusic(new int[] {0, 1, 2, 3, 4, 5}, new int[] {1, 2, 3, 4, 5});
         }
         else
           Music[0].Stop();
@@ -109,7 +110,7 @@ public class MainMenuManager : MonoBehaviour {
         if (Toggles[1].isOn)
         {
           AudioManager.GetInstance.GetSongs = 2;
-          PlayMusic(new int[] { 1, 0, 2 }, new int[] {0, 2});
+          PlayMusic(new int[] { 1, 0, 2, 3, 4, 5}, new int[] {0, 2, 3, 4, 5});
         }
         else
           Music[1].Stop();
@@ -119,10 +120,40 @@ public class MainMenuManager : MonoBehaviour {
         if (Toggles[2].isOn)
         {
           AudioManager.GetInstance.GetSongs = 3;
-          PlayMusic(new int[] {2, 0, 1}, new int[] {0, 1});
+          PlayMusic(new int[] {2, 0, 1, 3, 4, 5}, new int[] {0, 1, 3, 4, 5});
         }
         else
           Music[2].Stop();
+        break;
+
+      case 4:
+        if (Toggles[3].isOn)
+        {
+          AudioManager.GetInstance.GetSongs = 4;
+          PlayMusic(new int[] {3, 0, 1, 2, 4, 5}, new int[] {0, 1, 2, 4, 5});
+        }
+        else
+          Music[3].Stop();
+        break;
+
+      case 5:
+        if (Toggles[4].isOn)
+        {
+          AudioManager.GetInstance.GetSongs = 5;
+          PlayMusic(new int[] {4, 0, 1, 2, 3, 5}, new int[] {0, 1, 2, 3, 5});
+        }
+        else
+          Music[4].Stop();
+        break;
+
+      case 6:
+        if (Toggles[5].isOn)
+        {
+          AudioManager.GetInstance.GetSongs = 6;
+          PlayMusic(new int[] {5, 0, 1, 2, 3, 4}, new int[] { 0, 1, 2, 3, 4 });
+        }
+        else
+          Music[5].Stop();
         break;
 
       default:
@@ -132,11 +163,17 @@ public class MainMenuManager : MonoBehaviour {
 
   void PlayMusic(int[] music, int[] toggle)
   {
-    Toggles[toggle[0]].isOn = false;
-    Toggles[toggle[1]].isOn = false;
 
-    Music[music[0]].Play();
-    Music[music[1]].Stop();
-    Music[music[2]].Stop();
+    for(int i = 0; i < toggle.Length; i++)
+      Toggles[toggle[i]].isOn = false;
+
+
+    for (int i = 0; i < music.Length; i++)
+    {
+      if(i == 0)
+        Music[music[i]].Play();
+      else
+        Music[music[i]].Stop();
+    }
   }
 }

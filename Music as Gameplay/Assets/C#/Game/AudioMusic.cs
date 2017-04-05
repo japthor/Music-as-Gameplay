@@ -32,6 +32,18 @@ public class AudioMusic : MonoBehaviour {
         AudioSource.clip = Resources.Load("Tobu - Seven") as AudioClip;
         break;
 
+      case 4:
+        AudioSource.clip = Resources.Load("Elektronomia - Energy") as AudioClip;
+        break;
+
+      case 5:
+        AudioSource.clip = Resources.Load("Aero Chord -Time Leap") as AudioClip;
+        break;
+
+      case 6:
+        AudioSource.clip = Resources.Load("Distrion & Alex Skrindo - Entropy") as AudioClip;
+        break;
+
       default:
         break;
     }
