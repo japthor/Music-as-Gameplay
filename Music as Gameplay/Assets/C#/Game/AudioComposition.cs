@@ -28,7 +28,7 @@ public class AudioComposition : MonoBehaviour {
 
   void GetSpectrumData()
   {
-    AudioSource.GetSpectrumData(Samples, 0, FFTWindow.Blackman);
+    AudioSource.GetSpectrumData(Samples, 0, FFTWindow.BlackmanHarris);
   }
 
   void IntegrateFrequency()
