@@ -1,7 +1,7 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Music as Gameplay", "Music as Gameplay.csproj", "{573A8C77-68F0-D91E-FC42-FC6CE8A68E95}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{7CC93B7B-5A95-FDCA-0600-8A2FA64F95A6}") = "Music as Gameplay", "Assembly-CSharp.csproj", "{5043AC1E-4B32-C854-7B92-CA7A4B234BBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,12 +9,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{573A8C77-68F0-D91E-FC42-FC6CE8A68E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{573A8C77-68F0-D91E-FC42-FC6CE8A68E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{573A8C77-68F0-D91E-FC42-FC6CE8A68E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{573A8C77-68F0-D91E-FC42-FC6CE8A68E95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5043AC1E-4B32-C854-7B92-CA7A4B234BBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5043AC1E-4B32-C854-7B92-CA7A4B234BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5043AC1E-4B32-C854-7B92-CA7A4B234BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5043AC1E-4B32-C854-7B92-CA7A4B234BBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
 	EndGlobalSection
 EndGlobal
